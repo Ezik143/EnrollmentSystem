@@ -1,0 +1,39 @@
+## .NET / Visual Studio
+.vs/
+.vscode/
+*.user
+*.suo
+*.userprefs
+*.cache
+*.log
+
+## Build Output
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+*.nupkg
+*.snupkg
+
+## Package Management
+packages/
+*.nuget
+NuGet.Config
+project.lock.json
+project.fragment.lock.json
+
+## IDE & OS
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+## Secrets & Local Config
+.env
+.env.local
+*.pem
+*.key
+appsettings.Development.json
