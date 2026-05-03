@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using EnrollmentManagementSystemAPI.Models.Dto.Request;
 using EnrollmentManagementSystemAPI.Models.Entities;
+using Microsoft.EntityFrameworkCore;
+using EnrollmentManagementSystemAPI.Models.Dto.Response;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -25,7 +27,7 @@ namespace EnrollmentManagementSystemAPI.Controllers
         public IActionResult GetAllDepartment() 
         {
             var Departments = _context.Departments.ToList();
-            var departmentDtos = _mapper.Map<List<DepartmentDto>>(Departments);
+            var departmentDtos = _mapper.Map<List<DepartmentReponseDto>>(Departments);
             return Ok(departmentDtos);
         }
 
@@ -38,13 +40,13 @@ namespace EnrollmentManagementSystemAPI.Controllers
             {
                 return NotFound();
             }
-            var departmentDto = _mapper.Map<DepartmentDto>(department);
+            var departmentDto = _mapper.Map<DepartmentReponseDto>(department);
             return Ok(departmentDto);
         }
 
         // POST api/<DepartmentController>
         [HttpPost]
-        public IActionResult CreateDepartment([FromBody] DepartmentDto departmentDto)
+        public IActionResult CreateDepartment([FromBody] CreateDepartmentDto departmentDto)
         {
             if (departmentDto == null)
             {
@@ -53,12 +55,14 @@ namespace EnrollmentManagementSystemAPI.Controllers
             var department = _mapper.Map<Department>(departmentDto);
             _context.Departments.Add(department);
             _context.SaveChanges();
-            return Ok(department);
+
+            var createdDepartmentDto = _mapper.Map<CreateDepartmentDto>(department);
+            return CreatedAtAction(nameof(GetDepartmentById), new { id = department.DepartmentId }, createdDepartmentDto);
         }
 
             // PUT api/<DepartmentController>/5
             [HttpPut("{id}")]
-        public IActionResult UpdateDepartment(int id, [FromBody] DepartmentDto updateDepartment)
+        public IActionResult UpdateDepartment(int id, [FromBody] CreateDepartmentDto updateDepartment)
         {
             if (updateDepartment == null)
             {  
@@ -74,7 +78,8 @@ namespace EnrollmentManagementSystemAPI.Controllers
             _mapper.Map(updateDepartment, department);
 
             _context.SaveChanges();
-            return Ok(department);
+            var departmentDto = _mapper.Map<CreateDepartmentDto>(department);
+            return Ok(departmentDto);
         }
 
         // DELETE api/<DepartmentController>/5

@@ -1,10 +1,11 @@
-﻿namespace EnrollmentManagementSystemAPI.Models.Entities
+﻿using EnrollmentManagementSystemAPI.Models.Entities;
+
+namespace EnrollmentManagementSystemAPI.Models.Dto.Response
 {
-    public class Instructor
+    public class InstructorResponseDto
     {
         public int InstructorId { get; set; }
         public int DepartureId { get; set; }
-        public Department? Department { get; set; } = null;
         public int EmployeeNumber { get; set; }
         public string FirstName { get; set; } = string.Empty;
         public string MiddleName { get; set; } = string.Empty;

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EnrollmentManagementSystemAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260430202338_InitialCreate")]
+    [Migration("20260503135527_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -69,7 +69,7 @@ namespace EnrollmentManagementSystemAPI.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("CourseSubjectId"));
 
-                    b.Property<int?>("CourseId")
+                    b.Property<int>("CourseId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Name")
@@ -79,7 +79,7 @@ namespace EnrollmentManagementSystemAPI.Migrations
                     b.Property<int>("SemesterNo")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("SubjectId")
+                    b.Property<int>("SubjectId")
                         .HasColumnType("integer");
 
                     b.HasKey("CourseSubjectId");
@@ -124,10 +124,10 @@ namespace EnrollmentManagementSystemAPI.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("SectionId")
+                    b.Property<int>("SectionId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("StudentId")
+                    b.Property<int>("StudentId")
                         .HasColumnType("integer");
 
                     b.HasKey("EnrollmentId");
@@ -148,6 +148,9 @@ namespace EnrollmentManagementSystemAPI.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("InstructorId"));
 
                     b.Property<int?>("DepartmentId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("DepartureId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Email")
@@ -202,8 +205,9 @@ namespace EnrollmentManagementSystemAPI.Migrations
                     b.Property<int>("InstructorId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("Rooms")
-                        .HasColumnType("integer");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int>("TermId")
                         .HasColumnType("integer");
@@ -287,7 +291,7 @@ namespace EnrollmentManagementSystemAPI.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("DepartmentId")
+                    b.Property<int>("DepartmentId")
                         .HasColumnType("integer");
 
                     b.Property<string>("SubjectCode")
@@ -352,11 +356,15 @@ namespace EnrollmentManagementSystemAPI.Migrations
                 {
                     b.HasOne("EnrollmentManagementSystemAPI.Models.Entities.Course", "Course")
                         .WithMany()
-                        .HasForeignKey("CourseId");
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("EnrollmentManagementSystemAPI.Models.Entities.Subject", "Subject")
                         .WithMany()
-                        .HasForeignKey("SubjectId");
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Course");
 
@@ -367,11 +375,15 @@ namespace EnrollmentManagementSystemAPI.Migrations
                 {
                     b.HasOne("EnrollmentManagementSystemAPI.Models.Entities.Section", "Section")
                         .WithMany()
-                        .HasForeignKey("SectionId");
+                        .HasForeignKey("SectionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("EnrollmentManagementSystemAPI.Models.Entities.Student", "Student")
                         .WithMany()
-                        .HasForeignKey("StudentId");
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Section");
 
@@ -435,7 +447,9 @@ namespace EnrollmentManagementSystemAPI.Migrations
                 {
                     b.HasOne("EnrollmentManagementSystemAPI.Models.Entities.Department", "Department")
                         .WithMany()
-                        .HasForeignKey("DepartmentId");
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Department");
                 });

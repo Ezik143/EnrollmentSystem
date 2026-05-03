@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace EnrollmentManagementSystemAPI.Models.Dto.Request
 {
-    public class CourseSubjectDto
+    public class CreateCourseSubjectDto
     {
         [Required]
         public int CourseId { get; set; }

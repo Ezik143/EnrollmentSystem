@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using EnrollmentManagementSystemAPI.data;
 using EnrollmentManagementSystemAPI.Models.Dto.Request;
+using EnrollmentManagementSystemAPI.Models.Dto.Response;
 using EnrollmentManagementSystemAPI.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,7 +28,7 @@ namespace EnrollmentManagementSystemAPI.Controllers
         public IActionResult GetAllCourse()
         {
             var courses = _context.Courses.ToList();
-            var courseDtos = _mapper.Map<List<CourseDto>>(courses);
+            var courseDtos = _mapper.Map<List<CourseSubjectResponseDto>>(courses);
             return Ok(courseDtos);
         }
 
@@ -40,12 +41,13 @@ namespace EnrollmentManagementSystemAPI.Controllers
             {
                 return NotFound();
             }
-            return Ok(course);
+            var courseDto = _mapper.Map<CourseSubjectResponseDto>(course);
+            return Ok(courseDto);
         }
 
         // POST api/<CourseController>
         [HttpPost]
-        public IActionResult CreateCourse([FromBody] CourseDto createCourse)
+        public IActionResult CreateCourse([FromBody] CreateCourseDto createCourse)
         {
             if (createCourse == null)
             {
@@ -56,13 +58,13 @@ namespace EnrollmentManagementSystemAPI.Controllers
             _context.Courses.Add(course);
             _context.SaveChanges();
 
-            
-            return Ok(createCourse);
+            var courseDto = _mapper.Map<CreateCourseDto>(course);
+            return CreatedAtAction(nameof(GetCourse), new { id = course.CourseId }, courseDto);
         }
 
         // PUT api/<CourseController>/5
         [HttpPut("{id}")]
-        public IActionResult UpdateCourse(int id, [FromBody] CourseDto updateCourse)
+        public IActionResult UpdateCourse(int id, [FromBody] CreateCourseDto updateCourse)
         {
             if(updateCourse == null)
             {   
@@ -78,7 +80,8 @@ namespace EnrollmentManagementSystemAPI.Controllers
             _mapper.Map(updateCourse, course);
 
             _context.SaveChanges();
-            return Ok(course);
+            var courseDto = _mapper.Map<CreateCourseDto>(course);
+            return Ok(courseDto);
         }
 
         // DELETE api/<CourseController>/5

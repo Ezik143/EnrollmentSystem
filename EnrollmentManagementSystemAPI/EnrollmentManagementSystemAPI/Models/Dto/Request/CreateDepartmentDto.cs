@@ -2,7 +2,7 @@
 
 namespace EnrollmentManagementSystemAPI.Models.Dto.Request
 {
-    public class DepartmentDto
+    public class CreateDepartmentDto
     {
         [Required, StringLength(50)]
         public string DepartmentCode { get; set; } = string.Empty;
