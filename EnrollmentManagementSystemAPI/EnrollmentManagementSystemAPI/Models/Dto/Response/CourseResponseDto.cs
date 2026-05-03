@@ -1,6 +1,6 @@
 ﻿namespace EnrollmentManagementSystemAPI.Models.Dto.Response
 {
-    public class CourseSubjectResponseDto
+    public class CourseResponseDto
     {
         public int CourseId { get; set; }
         public string CourseName { get; set; } = string.Empty;

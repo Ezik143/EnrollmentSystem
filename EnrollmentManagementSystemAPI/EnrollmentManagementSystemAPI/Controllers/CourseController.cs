@@ -28,7 +28,7 @@ namespace EnrollmentManagementSystemAPI.Controllers
         public IActionResult GetAllCourse()
         {
             var courses = _context.Courses.ToList();
-            var courseDtos = _mapper.Map<List<CourseSubjectResponseDto>>(courses);
+            var courseDtos = _mapper.Map<List<CourseResponseDto>>(courses);
             return Ok(courseDtos);
         }
 
@@ -41,7 +41,7 @@ namespace EnrollmentManagementSystemAPI.Controllers
             {
                 return NotFound();
             }
-            var courseDto = _mapper.Map<CourseSubjectResponseDto>(course);
+            var courseDto = _mapper.Map<CourseResponseDto>(course);
             return Ok(courseDto);
         }
 
@@ -58,7 +58,7 @@ namespace EnrollmentManagementSystemAPI.Controllers
             _context.Courses.Add(course);
             _context.SaveChanges();
 
-            var courseDto = _mapper.Map<CreateCourseDto>(course);
+            var courseDto = _mapper.Map<CourseResponseDto>(course);
             return CreatedAtAction(nameof(GetCourse), new { id = course.CourseId }, courseDto);
         }
 
@@ -80,7 +80,7 @@ namespace EnrollmentManagementSystemAPI.Controllers
             _mapper.Map(updateCourse, course);
 
             _context.SaveChanges();
-            var courseDto = _mapper.Map<CreateCourseDto>(course);
+            var courseDto = _mapper.Map<CourseResponseDto>(course);
             return Ok(courseDto);
         }
 

@@ -1,17 +1,12 @@
 ﻿using EnrollmentManagementSystemAPI.Models.Entities;
-using System.ComponentModel.DataAnnotations;
 
-namespace EnrollmentManagementSystemAPI.Models.Dto.Request
+namespace EnrollmentManagementSystemAPI.Models.Dto.Response
 {
-    public class CreateCourseSubjectDto
+    public class CourseSubjectResponseDto
     {
-        [Required]
         public int CourseId { get; set; }
-        [Required]
         public int SubjectId { get; set; }
-        [Required, MaxLength(100)]
         public string Name { get; set; } = string.Empty;
-        [Required, Range(1, 10)]
         public int SemesterNo { get; set; }
     }
 }
