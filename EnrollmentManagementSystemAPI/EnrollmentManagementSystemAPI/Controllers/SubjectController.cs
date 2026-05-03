@@ -69,7 +69,7 @@ namespace EnrollmentManagementSystemAPI.Controllers
             }
             _mapper.Map(createCourseDto, subject);
             _context.SaveChanges();
-            var subjectDto = _mapper.Map<SubjectResponseDto>(createCourseDto);
+            var subjectDto = _mapper.Map<CreateCourseDto>(createCourseDto);
             return Ok(subjectDto);
         }
 

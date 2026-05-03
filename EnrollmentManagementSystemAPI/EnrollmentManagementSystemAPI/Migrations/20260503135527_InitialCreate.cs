@@ -52,7 +52,7 @@ namespace EnrollmentManagementSystemAPI.Migrations
                 defaultValue: "");
 
             migrationBuilder.AddColumn<int>(
-                name: "DepartureId",
+                name: "DepartmentId",
                 table: "Instructors",
                 type: "integer",
                 nullable: false,
@@ -167,7 +167,7 @@ namespace EnrollmentManagementSystemAPI.Migrations
                 table: "Sections");
 
             migrationBuilder.DropColumn(
-                name: "DepartureId",
+                name: "DepartmentId",
                 table: "Instructors");
 
             migrationBuilder.AlterColumn<int>(

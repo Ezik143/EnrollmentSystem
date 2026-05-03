@@ -6,7 +6,7 @@ namespace EnrollmentManagementSystemAPI.Models.Dto.Request
     public class CreateInstructorDto
     {
         [Required]
-        public int DepartureId { get; set; }
+        public int DepartmentId { get; set; }
         [Required]
         public int EmployeeNumber { get; set; }
         [Required, MaxLength(50)]

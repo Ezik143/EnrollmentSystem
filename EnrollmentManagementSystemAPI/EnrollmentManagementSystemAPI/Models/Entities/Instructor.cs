@@ -3,7 +3,7 @@
     public class Instructor
     {
         public int InstructorId { get; set; }
-        public int DepartureId { get; set; }
+        public int DepartmentId { get; set; }
         public Department? Department { get; set; } = null;
         public int EmployeeNumber { get; set; }
         public string FirstName { get; set; } = string.Empty;

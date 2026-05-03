@@ -53,7 +53,7 @@ namespace EnrollmentManagementSystemAPI.Controllers
             }
             
             var enrollment = _mapper.Map<Enrollment>(createEnrollmentDto);
-
+            _context.Enrollments.Add(enrollment);
             _context.SaveChanges();
             var enrollmentResponseDto = _mapper.Map<EnrollmentResponseDto>(enrollment);
             return CreatedAtAction(nameof(GetEnrollment), new { id = enrollment.EnrollmentId }, enrollmentResponseDto);

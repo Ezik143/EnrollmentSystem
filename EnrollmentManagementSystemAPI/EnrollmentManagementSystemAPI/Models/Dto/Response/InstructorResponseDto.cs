@@ -5,7 +5,7 @@ namespace EnrollmentManagementSystemAPI.Models.Dto.Response
     public class InstructorResponseDto
     {
         public int InstructorId { get; set; }
-        public int DepartureId { get; set; }
+        public int DepartmentId { get; set; }
         public int EmployeeNumber { get; set; }
         public string FirstName { get; set; } = string.Empty;
         public string MiddleName { get; set; } = string.Empty;

@@ -61,14 +61,14 @@ namespace EnrollmentManagementSystemAPI.Controllers
 
         // PUT api/<TermController>/5
         [HttpPut("{id}")]
-        public IActionResult UpdateTerm(int id, [FromBody] CreateCourseDto createCourseDto)
+        public IActionResult UpdateTerm(int id, [FromBody] CreateTermDto createTermDto)
         {
             var term = _context.Term.Find(id);
             if (term == null)
             {
                 return NotFound();
             }
-            _mapper.Map(createCourseDto, term);
+            _mapper.Map(createTermDto, term);
             _context.SaveChanges();
             var termDto = _mapper.Map<TermResponseDto>(term);
             return Ok(termDto);
