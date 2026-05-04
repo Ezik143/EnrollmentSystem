@@ -7,7 +7,8 @@ namespace EnrollmentManagementSystemAPI.Models.Dto.Profiles
 {
     public class DepartmentProfile : Profile
     {
-        public DepartmentProfile() { 
+        public DepartmentProfile()
+        {
             CreateMap<CreateDepartmentDto, Department>().ReverseMap();
             CreateMap<DepartmentReponseDto, Department>().ReverseMap();
         }

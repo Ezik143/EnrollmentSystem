@@ -5,12 +5,12 @@ using EnrollmentManagementSystemAPI.Models.Entities;
 
 namespace EnrollmentManagementSystemAPI.Models.Dto.Profiles
 {
-    public class EnrollmentProfile : Profile
+    public class SubjectProfile : Profile
     {
-        public EnrollmentProfile()
+        public SubjectProfile()
         {
-            CreateMap<CreateEnrollmentDto, Enrollment>().ReverseMap();
-            CreateMap<EnrollmentResponseDto, Enrollment>().ReverseMap();
+            CreateMap<CreateSubjectDto, Subject>().ReverseMap();
+            CreateMap<SubjectResponseDto, Subject>().ReverseMap();
         }
     }
 }

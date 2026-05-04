@@ -52,12 +52,11 @@ namespace EnrollmentManagementSystemAPI.Controllers
             }
             
             var student = _mapper.Map<Student>(createStudentDto);
-            _mapper.Map(createStudentDto, student);
             _context.Students.Add(student);
             _context.SaveChanges();
             
-            var StudentResponseDto = _mapper.Map<StudentResponseDto>(student);
-            return CreatedAtAction(nameof(GetStudentById), new { id = student.StudentId }, StudentResponseDto);
+            var studentResponseDto = _mapper.Map<StudentResponseDto>(student);
+            return CreatedAtAction(nameof(GetStudentById), new { id = student.StudentId }, studentResponseDto);
 
         }
 
@@ -68,7 +67,7 @@ namespace EnrollmentManagementSystemAPI.Controllers
             var student = _context.Students.Find(id);
             if(student == null)
             {
-                return BadRequest();
+                return NotFound();
             }
             
             _mapper.Map(updateStudentDto, student);

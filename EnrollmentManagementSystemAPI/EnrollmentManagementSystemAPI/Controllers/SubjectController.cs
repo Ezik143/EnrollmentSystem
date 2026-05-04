@@ -60,16 +60,18 @@ namespace EnrollmentManagementSystemAPI.Controllers
 
         // PUT api/<SubjectController>/5
         [HttpPut("{id}")]
-        public IActionResult UpdateSubject(int id, [FromBody] CreateCourseDto createCourseDto)
+        public IActionResult UpdateSubject(int id, [FromBody] CreateSubjectDto updateSubjectDto)
         {
             var subject = _context.Subjects.Find(id);
             if(subject == null)
             {
-                return BadRequest();
+                return NotFound();
             }
-            _mapper.Map(createCourseDto, subject);
+
+            _mapper.Map(updateSubjectDto, subject);
             _context.SaveChanges();
-            var subjectDto = _mapper.Map<CreateCourseDto>(createCourseDto);
+
+            var subjectDto = _mapper.Map<SubjectResponseDto>(subject);
             return Ok(subjectDto);
         }
 

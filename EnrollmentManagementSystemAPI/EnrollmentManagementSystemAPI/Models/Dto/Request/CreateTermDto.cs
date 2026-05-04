@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+using EnrollmentManagementSystemAPI.Models.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace EnrollmentManagementSystemAPI.Models.Dto.Request
 {
@@ -6,12 +7,28 @@ namespace EnrollmentManagementSystemAPI.Models.Dto.Request
     {
         [Required, Range(1, int.MaxValue)]
         public int TermCode { get; set; }
+
+        [Required, StringLength(20)]
+        public string AcademicYear { get; set; } = string.Empty;
+
+        [Required]
+        public TermType TermType { get; set; } = TermType.FirstSemester;
+
         [Required, StringLength(100)]
         public string Name { get; set; } = string.Empty;
+
         [Required, DataType(DataType.Date)]
         public DateOnly StartDate { get; set; }
+
         [Required, DataType(DataType.Date)]
         public DateOnly EndDate { get; set; }
+
+        [Required, DataType(DataType.Date)]
+        public DateOnly EnrollmentStartDate { get; set; }
+
+        [Required, DataType(DataType.Date)]
+        public DateOnly EnrollmentEndDate { get; set; }
+
         [Required]
         public bool IsCurrent { get; set; }
     }
