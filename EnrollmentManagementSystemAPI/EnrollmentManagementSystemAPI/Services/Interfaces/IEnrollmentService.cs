@@ -2,7 +2,7 @@
 
 namespace EnrollmentManagementSystemAPI.Services.Interfaces
 {
-    public interface ICourseService : IGenericService<Course>
+    public interface IEnrollmentService : IGenericService<Enrollment>
     {
     }
 }

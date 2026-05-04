@@ -1,6 +1,8 @@
-﻿namespace EnrollmentManagementSystemAPI.Services.Interfaces
+﻿using EnrollmentManagementSystemAPI.Models.Entities;
+
+namespace EnrollmentManagementSystemAPI.Services.Interfaces
 {
-    public class ICourseSubjectService
+    public interface ICourseSubjectService : IGenericService<CourseSubject>
     {
     }
 }
