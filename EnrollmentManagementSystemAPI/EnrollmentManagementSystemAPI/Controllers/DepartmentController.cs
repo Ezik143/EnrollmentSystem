@@ -1,10 +1,9 @@
-﻿using EnrollmentManagementSystemAPI.data;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using EnrollmentManagementSystemAPI.Models.Dto.Request;
 using EnrollmentManagementSystemAPI.Models.Entities;
-using Microsoft.EntityFrameworkCore;
 using EnrollmentManagementSystemAPI.Models.Dto.Response;
+using EnrollmentManagementSystemAPI.Services.Interfaces;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,28 +13,28 @@ namespace EnrollmentManagementSystemAPI.Controllers
     [ApiController]
     public class DepartmentController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IDepartmentService _departmentService;
         private readonly AutoMapper.IMapper _mapper;
 
-        public DepartmentController(ApplicationDbContext context, IMapper mapper)
-        { 
-            _context = context;
+        public DepartmentController(IDepartmentService departmentService, IMapper mapper)
+        {
+            _departmentService = departmentService;
             _mapper = mapper;
         }
         // GET: api/<DepartmentController>
         [HttpGet]
-        public IActionResult GetAllDepartment() 
+        public async Task<IActionResult> GetAllDepartment()
         {
-            var Departments = _context.Departments.ToList();
+            var Departments = await _departmentService.GetAllAsync();
             var departmentDtos = _mapper.Map<List<DepartmentReponseDto>>(Departments);
             return Ok(departmentDtos);
         }
 
         // GET api/<DepartmentController>/5
         [HttpGet("{id}")]
-        public IActionResult GetDepartmentById(int id)
+        public async Task<IActionResult> GetDepartmentById(int id)
         {
-            var department = _context.Departments.Find(id);
+            var department = await _departmentService.GetByIdAsync(id);
             if (department == null)
             {
                 return NotFound();
@@ -46,54 +45,52 @@ namespace EnrollmentManagementSystemAPI.Controllers
 
         // POST api/<DepartmentController>
         [HttpPost]
-        public IActionResult CreateDepartment([FromBody] CreateDepartmentDto departmentDto)
+        public async Task<IActionResult> CreateDepartment([FromBody] CreateDepartmentDto departmentDto)
         {
             if (departmentDto == null)
             {
                 return BadRequest();
             }
             var department = _mapper.Map<Department>(departmentDto);
-            _context.Departments.Add(department);
-            _context.SaveChanges();
+            await _departmentService.AddAsync(department);
 
             var createdDepartmentDto = _mapper.Map<CreateDepartmentDto>(department);
             return CreatedAtAction(nameof(GetDepartmentById), new { id = department.DepartmentId }, createdDepartmentDto);
         }
 
-            // PUT api/<DepartmentController>/5
-            [HttpPut("{id}")]
-        public IActionResult UpdateDepartment(int id, [FromBody] CreateDepartmentDto updateDepartment)
+        // PUT api/<DepartmentController>/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateDepartment(int id, [FromBody] CreateDepartmentDto updateDepartment)
         {
             if (updateDepartment == null)
-            {  
-                return BadRequest(); 
+            {
+                return BadRequest();
             }
-             
-            var department = _context.Departments.Find(id);
 
-            if(department == null)
+            var department = await _departmentService.GetByIdAsync(id);
+
+            if (department == null)
             {
                 return NotFound();
             }
             _mapper.Map(updateDepartment, department);
 
-            _context.SaveChanges();
+            await _departmentService.UpdateAsync(department);
             var departmentDto = _mapper.Map<CreateDepartmentDto>(department);
             return Ok(departmentDto);
         }
 
         // DELETE api/<DepartmentController>/5
         [HttpDelete("{id}")]
-        public IActionResult DeleteDepartment(int id)
+        public async Task<IActionResult> DeleteDepartment(int id)
         {
-            var department = _context.Departments.Find(id);
-            if(department == null)
+            var department = await _departmentService.GetByIdAsync(id);
+            if (department == null)
             {
                 return NotFound();
             }
 
-            _context.Departments.Remove(department);
-            _context.SaveChanges();
+            await _departmentService.DeleteAsync(id);
             return NoContent();
         }
     }

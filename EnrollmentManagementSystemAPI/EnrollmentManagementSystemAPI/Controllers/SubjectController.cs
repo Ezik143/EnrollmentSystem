@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using EnrollmentManagementSystemAPI.data;
 using EnrollmentManagementSystemAPI.Models.Dto.Request;
 using EnrollmentManagementSystemAPI.Models.Dto.Response;
 using EnrollmentManagementSystemAPI.Models.Entities;
+using EnrollmentManagementSystemAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -13,27 +13,27 @@ namespace EnrollmentManagementSystemAPI.Controllers
     [ApiController]
     public class SubjectController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ISubjectService _subjectService;
         private readonly IMapper _mapper;
 
-        public SubjectController(ApplicationDbContext context, IMapper mapper)
+        public SubjectController(ISubjectService subjectService, IMapper mapper)
         {
-            _context = context;
+            _subjectService = subjectService;
             _mapper = mapper;
         }
         [HttpGet]
-        public IActionResult GetAllSubjects()
+        public async Task<IActionResult> GetAllSubjects()
         {
-            var subjects = _context.Subjects.ToList();
+            var subjects = await _subjectService.GetAllAsync();
             var subjectDtos = _mapper.Map<List<SubjectResponseDto>>(subjects);
             return Ok(subjectDtos);
         }
 
         // GET api/<SubjectController>/5
         [HttpGet("{id}")]
-        public IActionResult GetSubjectById(int id)
+        public async Task<IActionResult> GetSubjectById(int id)
         {
-            var subject = _context.Subjects.Find(id);
+            var subject = await _subjectService.GetByIdAsync(id);
             if (subject == null)
             {
                 return NotFound();
@@ -44,32 +44,31 @@ namespace EnrollmentManagementSystemAPI.Controllers
 
         // POST api/<SubjectController>
         [HttpPost]
-        public IActionResult CreateSubject([FromBody] CreateSubjectDto createSubjectDto)
+        public async Task<IActionResult> CreateSubject([FromBody] CreateSubjectDto createSubjectDto)
         {
             if (createSubjectDto == null)
             {
                 return BadRequest();
             }
-            
+
             var subject = _mapper.Map<Subject>(createSubjectDto);
-            _context.Subjects.Add(subject);
-            _context.SaveChanges();
+            await _subjectService.AddAsync(subject);
             var subjectDto = _mapper.Map<SubjectResponseDto>(subject);
             return CreatedAtAction(nameof(GetSubjectById), new { id = subject.SubjectId }, subjectDto);
         }
 
         // PUT api/<SubjectController>/5
         [HttpPut("{id}")]
-        public IActionResult UpdateSubject(int id, [FromBody] CreateSubjectDto updateSubjectDto)
+        public async Task<IActionResult> UpdateSubject(int id, [FromBody] CreateSubjectDto updateSubjectDto)
         {
-            var subject = _context.Subjects.Find(id);
-            if(subject == null)
+            var subject = await _subjectService.GetByIdAsync(id);
+            if (subject == null)
             {
                 return NotFound();
             }
 
             _mapper.Map(updateSubjectDto, subject);
-            _context.SaveChanges();
+            await _subjectService.UpdateAsync(subject);
 
             var subjectDto = _mapper.Map<SubjectResponseDto>(subject);
             return Ok(subjectDto);
@@ -77,15 +76,14 @@ namespace EnrollmentManagementSystemAPI.Controllers
 
         // DELETE api/<SubjectController>/5
         [HttpDelete("{id}")]
-        public IActionResult DeleteSubject(int id)
+        public async Task<IActionResult> DeleteSubject(int id)
         {
-            var subject = _context.Subjects.Find(id);
-            if(subject == null)
+            var subject = await _subjectService.GetByIdAsync(id);
+            if (subject == null)
             {
                 return NotFound();
             }
-            _context.Subjects.Remove(subject);
-            _context.SaveChanges();
+            await _subjectService.DeleteAsync(id);
             return NoContent();
         }
     }

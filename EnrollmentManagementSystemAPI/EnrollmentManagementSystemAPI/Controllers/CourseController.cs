@@ -3,6 +3,7 @@ using EnrollmentManagementSystemAPI.data;
 using EnrollmentManagementSystemAPI.Models.Dto.Request;
 using EnrollmentManagementSystemAPI.Models.Dto.Response;
 using EnrollmentManagementSystemAPI.Models.Entities;
+using EnrollmentManagementSystemAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -13,30 +14,30 @@ namespace EnrollmentManagementSystemAPI.Controllers
     [ApiController]
     public class CourseController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
 
         private readonly IMapper _mapper;
+        private readonly ICourseService _courseService;
 
-        public CourseController(ApplicationDbContext context, IMapper mapper)
+        public CourseController(ICourseService courseService, IMapper mapper)
         {
-            _context = context;
+            _courseService = courseService;
             _mapper = mapper;
         }
 
         // GET: api/<CourseController>
         [HttpGet]
-        public IActionResult GetAllCourse()
+        public async Task<IActionResult> GetAllCourse()
         {
-            var courses = _context.Courses.ToList();
+            var courses = await _courseService.GetAllAsync();
             var courseDtos = _mapper.Map<List<CourseResponseDto>>(courses);
             return Ok(courseDtos);
         }
 
         // GET api/<CourseController>/5
         [HttpGet("{id}")]
-        public IActionResult GetCourse(int id)
+        public async Task<IActionResult> GetCourse(int id)
         {
-            var course = _context.Courses.Find(id);
+            var course = await _courseService.GetByIdAsync(id);
             if (course == null)
             {
                 return NotFound();
@@ -47,7 +48,7 @@ namespace EnrollmentManagementSystemAPI.Controllers
 
         // POST api/<CourseController>
         [HttpPost]
-        public IActionResult CreateCourse([FromBody] CreateCourseDto createCourse)
+        public async Task<IActionResult> CreateCourse([FromBody] CreateCourseDto createCourse)
         {
             if (createCourse == null)
             {
@@ -55,8 +56,7 @@ namespace EnrollmentManagementSystemAPI.Controllers
             }
             
             var course = _mapper.Map<Course>(createCourse);
-            _context.Courses.Add(course);
-            _context.SaveChanges();
+            await _courseService.AddAsync(course);
 
             var courseDto = _mapper.Map<CourseResponseDto>(course);
             return CreatedAtAction(nameof(GetCourse), new { id = course.CourseId }, courseDto);
@@ -64,14 +64,14 @@ namespace EnrollmentManagementSystemAPI.Controllers
 
         // PUT api/<CourseController>/5
         [HttpPut("{id}")]
-        public IActionResult UpdateCourse(int id, [FromBody] CreateCourseDto updateCourse)
+        public async Task<IActionResult> UpdateCourse(int id, [FromBody] CreateCourseDto updateCourse)
         {
             if(updateCourse == null)
             {   
                 return BadRequest();
             }
 
-            var course = _context.Courses.Find(id);
+            var course = await _courseService.GetByIdAsync(id);
             if(course == null)
             {
                 return NotFound();
@@ -79,24 +79,23 @@ namespace EnrollmentManagementSystemAPI.Controllers
 
             _mapper.Map(updateCourse, course);
 
-            _context.SaveChanges();
+            await _courseService.UpdateAsync(course);
             var courseDto = _mapper.Map<CourseResponseDto>(course);
             return Ok(courseDto);
         }
 
         // DELETE api/<CourseController>/5
         [HttpDelete("{id}")]
-        public IActionResult DeleteCourse(int id)
+        public async Task<IActionResult> DeleteCourse(int id)
         {
 
-            var course = _context.Courses.Find(id);
+            var course = await _courseService.GetByIdAsync(id);
             if (course == null)
             {
                 return NotFound();
             }
 
-            _context.Courses.Remove(course);
-            _context.SaveChanges();
+            await _courseService.DeleteAsync(id);
             return NoContent();
         }
     }
