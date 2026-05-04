@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace EnrollmentManagementSystemAPI.Services
+namespace EnrollmentManagementSystemAPI.Services.Interfaces
 {
     public interface IGenericRepository<T> where T : class
     {
