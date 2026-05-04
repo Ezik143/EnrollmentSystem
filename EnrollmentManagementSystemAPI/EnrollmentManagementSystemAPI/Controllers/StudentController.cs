@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using EnrollmentManagementSystemAPI.data;
 using EnrollmentManagementSystemAPI.Models.Dto.Request;
 using EnrollmentManagementSystemAPI.Models.Dto.Response;
 using EnrollmentManagementSystemAPI.Models.Entities;
+using EnrollmentManagementSystemAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -13,27 +13,27 @@ namespace EnrollmentManagementSystemAPI.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IStudentService _studentService;
         private readonly IMapper _mapper;
-        public StudentController(ApplicationDbContext context, IMapper mapper) 
+        public StudentController(IStudentService studentService, IMapper mapper)
         {
-            _context = context;
+            _studentService = studentService;
             _mapper = mapper;
         }
         // GET: api/<StudentController>
         [HttpGet]
-        public IActionResult GetAllStudent()
+        public async Task<IActionResult> GetAllStudent()
         {
-            var student = _context.Students.ToList();
+            var student = await _studentService.GetAllAsync();
             var studentDtos = _mapper.Map<List<StudentResponseDto>>(student);
             return Ok(studentDtos);
         }
 
         // GET api/<StudentController>/5
         [HttpGet("{id}")]
-        public IActionResult GetStudentById(int id)
+        public async Task<IActionResult> GetStudentById(int id)
         {
-            var student = _context.Students.Find(id);
+            var student = await _studentService.GetByIdAsync(id);
             if (student == null)
             {
                 return NotFound();
@@ -44,51 +44,48 @@ namespace EnrollmentManagementSystemAPI.Controllers
 
         // POST api/<StudentController>
         [HttpPost]
-        public IActionResult CreateStudent([FromBody] CreateStudentDto createStudentDto)
+        public async Task<IActionResult> CreateStudent([FromBody] CreateStudentDto createStudentDto)
         {
             if (createStudentDto == null)
             {
                 return BadRequest();
             }
-            
+
             var student = _mapper.Map<Student>(createStudentDto);
-            _mapper.Map(createStudentDto, student);
-            _context.Students.Add(student);
-            _context.SaveChanges();
-            
-            var StudentResponseDto = _mapper.Map<StudentResponseDto>(student);
-            return CreatedAtAction(nameof(GetStudentById), new { id = student.StudentId }, StudentResponseDto);
+            await _studentService.AddAsync(student);
+
+            var studentResponseDto = _mapper.Map<StudentResponseDto>(student);
+            return CreatedAtAction(nameof(GetStudentById), new { id = student.StudentId }, studentResponseDto);
 
         }
 
         // PUT api/<StudentController>/5
         [HttpPut("{id}")]
-        public IActionResult UpdateStudent(int id, [FromBody] CreateStudentDto updateStudentDto)
+        public async Task<IActionResult> UpdateStudent(int id, [FromBody] CreateStudentDto updateStudentDto)
         {
-            var student = _context.Students.Find(id);
-            if(student == null)
+            var student = await _studentService.GetByIdAsync(id);
+            if (student == null)
             {
-                return BadRequest();
+                return NotFound();
             }
-            
+
             _mapper.Map(updateStudentDto, student);
-            _context.SaveChanges();
-            
+            await _studentService.UpdateAsync(student);
+
             var studentDto = _mapper.Map<StudentResponseDto>(student);
             return Ok(studentDto);
         }
 
         // DELETE api/<StudentController>/5
         [HttpDelete("{id}")]
-        public IActionResult DeleteStudent(int id)
+        public async Task<IActionResult> DeleteStudent(int id)
         {
-            var student = _context.Students.Find(id);
+            var student = await _studentService.GetByIdAsync(id);
             if (student == null)
             {
                 return NotFound();
             }
-            _context.Students.Remove(student);
-            _context.SaveChanges();
+            await _studentService.DeleteAsync(id);
             return NoContent();
         }
     }

@@ -30,16 +30,24 @@ namespace EnrollmentManagementSystemAPI.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("CourseId"));
 
+                    b.Property<string>("ChedProgramCode")
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
                     b.Property<string>("CourseCode")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
 
                     b.Property<string>("CourseName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)");
 
-                    b.Property<int>("Credits")
-                        .HasColumnType("integer");
+                    b.Property<string>("CurriculumYear")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
 
                     b.Property<int>("DepartmentId")
                         .HasColumnType("integer");
@@ -48,10 +56,30 @@ namespace EnrollmentManagementSystemAPI.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<bool>("isActive")
+                    b.Property<int>("EducationLevel")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("SeniorHighStrand")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("SeniorHighTrack")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<int>("TotalUnits")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("YearDuration")
+                        .HasColumnType("integer");
+
                     b.HasKey("CourseId");
+
+                    b.HasIndex("CourseCode")
+                        .IsUnique();
 
                     b.HasIndex("DepartmentId");
 
@@ -69,21 +97,29 @@ namespace EnrollmentManagementSystemAPI.Migrations
                     b.Property<int>("CourseId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<bool>("IsRequired")
+                        .HasColumnType("boolean");
 
-                    b.Property<int>("SemesterNo")
-                        .HasColumnType("integer");
+                    b.Property<string>("Remarks")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)");
 
                     b.Property<int>("SubjectId")
                         .HasColumnType("integer");
 
+                    b.Property<int>("TermNumber")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("YearLevel")
+                        .HasColumnType("integer");
+
                     b.HasKey("CourseSubjectId");
 
-                    b.HasIndex("CourseId");
-
                     b.HasIndex("SubjectId");
+
+                    b.HasIndex("CourseId", "SubjectId", "YearLevel", "TermNumber")
+                        .IsUnique();
 
                     b.ToTable("CourseSubjects");
                 });
@@ -96,15 +132,31 @@ namespace EnrollmentManagementSystemAPI.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("DepartmentId"));
 
+                    b.Property<string>("Campus")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)");
+
                     b.Property<string>("DepartmentCode")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<int>("EducationAuthority")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)");
 
                     b.HasKey("DepartmentId");
+
+                    b.HasIndex("DepartmentCode")
+                        .IsUnique();
 
                     b.ToTable("Departments");
                 });
@@ -117,21 +169,40 @@ namespace EnrollmentManagementSystemAPI.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("EnrollmentId"));
 
-                    b.Property<string>("EnrolledOn")
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateOnly>("EnrolledOn")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Remarks")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)");
+
+                    b.Property<string>("ScholarshipType")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<int>("SectionId")
                         .HasColumnType("integer");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
                     b.Property<int>("StudentId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UnitsEnrolled")
                         .HasColumnType("integer");
 
                     b.HasKey("EnrollmentId");
 
                     b.HasIndex("SectionId");
 
-                    b.HasIndex("StudentId");
+                    b.HasIndex("StudentId", "SectionId")
+                        .IsUnique();
 
                     b.ToTable("Enrollments");
                 });
@@ -144,37 +215,66 @@ namespace EnrollmentManagementSystemAPI.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("InstructorId"));
 
+                    b.Property<string>("ContactNumber")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
                     b.Property<int>("DepartmentId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                    b.Property<int>("EmployeeNumber")
-                        .HasColumnType("integer");
+                    b.Property<string>("EmployeeNumber")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<string>("EmploymentType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
-                    b.Property<DateTime>("HireDate")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly>("HireDate")
+                        .HasColumnType("date");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.Property<string>("MiddleName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("Rank")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("Suffix")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("character varying(15)");
 
                     b.HasKey("InstructorId");
 
                     b.HasIndex("DepartmentId");
+
+                    b.HasIndex("EmployeeNumber")
+                        .IsUnique();
 
                     b.ToTable("Instructors");
                 });
@@ -186,6 +286,11 @@ namespace EnrollmentManagementSystemAPI.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("SectionId"));
+
+                    b.Property<string>("Campus")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)");
 
                     b.Property<int>("Capacity")
                         .HasColumnType("integer");
@@ -199,11 +304,28 @@ namespace EnrollmentManagementSystemAPI.Migrations
                     b.Property<int>("InstructorId")
                         .HasColumnType("integer");
 
+                    b.Property<bool>("IsOpen")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("Room")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("Schedule")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("character varying(120)");
 
                     b.Property<int>("TermId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("YearLevel")
                         .HasColumnType("integer");
 
                     b.HasKey("SectionId");
@@ -214,7 +336,8 @@ namespace EnrollmentManagementSystemAPI.Migrations
 
                     b.HasIndex("InstructorId");
 
-                    b.HasIndex("TermId");
+                    b.HasIndex("TermId", "CourseSubjectId", "Name")
+                        .IsUnique();
 
                     b.ToTable("Sections");
                 });
@@ -227,48 +350,169 @@ namespace EnrollmentManagementSystemAPI.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("StudentId"));
 
+                    b.Property<int>("AdmissionType")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Barangay")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("BirthPlace")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("character varying(120)");
+
+                    b.Property<string>("Citizenship")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
+
+                    b.Property<string>("CityMunicipality")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("CivilStatus")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<int?>("CourseId")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateOnly>("DateAdmitted")
+                        .HasColumnType("date");
 
                     b.Property<DateOnly>("DateOfBirth")
                         .HasColumnType("date");
 
-                    b.Property<int?>("DepartmentId")
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("EducationLevel")
                         .HasColumnType("integer");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.Property<string>("Gender")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<string>("GuardianContactNumber")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<string>("GuardianName")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)");
+
+                    b.Property<string>("GuardianRelationship")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("HouseStreet")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)");
+
+                    b.Property<string>("IndigenousGroup")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
 
+                    b.Property<bool>("IsFourPsBeneficiary")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsIndigenousPeople")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("LearnerReferenceNumber")
+                        .HasMaxLength(12)
+                        .HasColumnType("character varying(12)");
 
                     b.Property<string>("MiddleName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
 
-                    b.Property<int>("StudentNumber")
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("character varying(15)");
+
+                    b.Property<string>("Province")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("Region")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("SeniorHighStrand")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("SeniorHighTrack")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("StudentNumber")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<string>("Suffix")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("character varying(15)");
+
+                    b.Property<int>("YearLevel")
                         .HasColumnType("integer");
 
                     b.HasKey("StudentId");
 
+                    b.HasIndex("CourseId");
+
                     b.HasIndex("DepartmentId");
+
+                    b.HasIndex("LearnerReferenceNumber")
+                        .IsUnique();
+
+                    b.HasIndex("StudentNumber")
+                        .IsUnique();
 
                     b.ToTable("Students");
                 });
@@ -281,27 +525,51 @@ namespace EnrollmentManagementSystemAPI.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("SubjectId"));
 
-                    b.Property<string>("CourseCode")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<int>("DepartmentId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("EducationLevel")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsCoreSubject")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("LaboratoryUnits")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("LectureUnits")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("PrerequisiteSubjectId")
                         .HasColumnType("integer");
 
                     b.Property<string>("SubjectCode")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<int>("TermNumber")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)");
 
                     b.Property<int>("Units")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("YearLevel")
                         .HasColumnType("integer");
 
                     b.HasKey("SubjectId");
 
                     b.HasIndex("DepartmentId");
+
+                    b.HasIndex("PrerequisiteSubjectId");
+
+                    b.HasIndex("SubjectCode")
+                        .IsUnique();
 
                     b.ToTable("Subjects");
                 });
@@ -314,7 +582,18 @@ namespace EnrollmentManagementSystemAPI.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("TermId"));
 
+                    b.Property<string>("AcademicYear")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
                     b.Property<DateOnly>("EndDate")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly>("EnrollmentEndDate")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly>("EnrollmentStartDate")
                         .HasColumnType("date");
 
                     b.Property<bool>("IsCurrent")
@@ -322,7 +601,8 @@ namespace EnrollmentManagementSystemAPI.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<DateOnly>("StartDate")
                         .HasColumnType("date");
@@ -330,15 +610,21 @@ namespace EnrollmentManagementSystemAPI.Migrations
                     b.Property<int>("TermCode")
                         .HasColumnType("integer");
 
+                    b.Property<int>("TermType")
+                        .HasColumnType("integer");
+
                     b.HasKey("TermId");
 
-                    b.ToTable("Term");
+                    b.HasIndex("AcademicYear", "TermType")
+                        .IsUnique();
+
+                    b.ToTable("Term", (string)null);
                 });
 
             modelBuilder.Entity("EnrollmentManagementSystemAPI.Models.Entities.Course", b =>
                 {
                     b.HasOne("EnrollmentManagementSystemAPI.Models.Entities.Department", "Department")
-                        .WithMany()
+                        .WithMany("Courses")
                         .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -349,13 +635,13 @@ namespace EnrollmentManagementSystemAPI.Migrations
             modelBuilder.Entity("EnrollmentManagementSystemAPI.Models.Entities.CourseSubject", b =>
                 {
                     b.HasOne("EnrollmentManagementSystemAPI.Models.Entities.Course", "Course")
-                        .WithMany()
+                        .WithMany("CourseSubjects")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("EnrollmentManagementSystemAPI.Models.Entities.Subject", "Subject")
-                        .WithMany()
+                        .WithMany("CourseSubjects")
                         .HasForeignKey("SubjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -368,13 +654,13 @@ namespace EnrollmentManagementSystemAPI.Migrations
             modelBuilder.Entity("EnrollmentManagementSystemAPI.Models.Entities.Enrollment", b =>
                 {
                     b.HasOne("EnrollmentManagementSystemAPI.Models.Entities.Section", "Section")
-                        .WithMany()
+                        .WithMany("Enrollments")
                         .HasForeignKey("SectionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("EnrollmentManagementSystemAPI.Models.Entities.Student", "Student")
-                        .WithMany()
+                        .WithMany("Enrollments")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -387,8 +673,10 @@ namespace EnrollmentManagementSystemAPI.Migrations
             modelBuilder.Entity("EnrollmentManagementSystemAPI.Models.Entities.Instructor", b =>
                 {
                     b.HasOne("EnrollmentManagementSystemAPI.Models.Entities.Department", "Department")
-                        .WithMany()
-                        .HasForeignKey("DepartmentId");
+                        .WithMany("Instructors")
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Department");
                 });
@@ -402,19 +690,19 @@ namespace EnrollmentManagementSystemAPI.Migrations
                         .IsRequired();
 
                     b.HasOne("EnrollmentManagementSystemAPI.Models.Entities.CourseSubject", "CourseSubject")
-                        .WithMany()
+                        .WithMany("Sections")
                         .HasForeignKey("CourseSubjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("EnrollmentManagementSystemAPI.Models.Entities.Instructor", "Instructor")
-                        .WithMany()
+                        .WithMany("Sections")
                         .HasForeignKey("InstructorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("EnrollmentManagementSystemAPI.Models.Entities.Term", "Term")
-                        .WithMany()
+                        .WithMany("Sections")
                         .HasForeignKey("TermId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -430,9 +718,17 @@ namespace EnrollmentManagementSystemAPI.Migrations
 
             modelBuilder.Entity("EnrollmentManagementSystemAPI.Models.Entities.Student", b =>
                 {
+                    b.HasOne("EnrollmentManagementSystemAPI.Models.Entities.Course", "Course")
+                        .WithMany("Students")
+                        .HasForeignKey("CourseId");
+
                     b.HasOne("EnrollmentManagementSystemAPI.Models.Entities.Department", "Department")
-                        .WithMany()
-                        .HasForeignKey("DepartmentId");
+                        .WithMany("Students")
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
 
                     b.Navigation("Department");
                 });
@@ -440,12 +736,69 @@ namespace EnrollmentManagementSystemAPI.Migrations
             modelBuilder.Entity("EnrollmentManagementSystemAPI.Models.Entities.Subject", b =>
                 {
                     b.HasOne("EnrollmentManagementSystemAPI.Models.Entities.Department", "Department")
-                        .WithMany()
+                        .WithMany("Subjects")
                         .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("EnrollmentManagementSystemAPI.Models.Entities.Subject", "PrerequisiteSubject")
+                        .WithMany("DependentSubjects")
+                        .HasForeignKey("PrerequisiteSubjectId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.Navigation("Department");
+
+                    b.Navigation("PrerequisiteSubject");
+                });
+
+            modelBuilder.Entity("EnrollmentManagementSystemAPI.Models.Entities.Course", b =>
+                {
+                    b.Navigation("CourseSubjects");
+
+                    b.Navigation("Students");
+                });
+
+            modelBuilder.Entity("EnrollmentManagementSystemAPI.Models.Entities.CourseSubject", b =>
+                {
+                    b.Navigation("Sections");
+                });
+
+            modelBuilder.Entity("EnrollmentManagementSystemAPI.Models.Entities.Department", b =>
+                {
+                    b.Navigation("Courses");
+
+                    b.Navigation("Instructors");
+
+                    b.Navigation("Students");
+
+                    b.Navigation("Subjects");
+                });
+
+            modelBuilder.Entity("EnrollmentManagementSystemAPI.Models.Entities.Instructor", b =>
+                {
+                    b.Navigation("Sections");
+                });
+
+            modelBuilder.Entity("EnrollmentManagementSystemAPI.Models.Entities.Section", b =>
+                {
+                    b.Navigation("Enrollments");
+                });
+
+            modelBuilder.Entity("EnrollmentManagementSystemAPI.Models.Entities.Student", b =>
+                {
+                    b.Navigation("Enrollments");
+                });
+
+            modelBuilder.Entity("EnrollmentManagementSystemAPI.Models.Entities.Subject", b =>
+                {
+                    b.Navigation("CourseSubjects");
+
+                    b.Navigation("DependentSubjects");
+                });
+
+            modelBuilder.Entity("EnrollmentManagementSystemAPI.Models.Entities.Term", b =>
+                {
+                    b.Navigation("Sections");
                 });
 #pragma warning restore 612, 618
         }

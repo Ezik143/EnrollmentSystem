@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using EnrollmentManagementSystemAPI.data;
 using EnrollmentManagementSystemAPI.Models.Dto.Request;
 using EnrollmentManagementSystemAPI.Models.Dto.Response;
 using EnrollmentManagementSystemAPI.Models.Entities;
+using EnrollmentManagementSystemAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -13,28 +13,28 @@ namespace EnrollmentManagementSystemAPI.Controllers
     [ApiController]
     public class CourseSubjectController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ICourseSubjectService _courseSubjectService;
         private readonly IMapper _mapper;
-        public CourseSubjectController(ApplicationDbContext context, IMapper mapper)
+        public CourseSubjectController(ICourseSubjectService courseSubjectService, IMapper mapper)
         {
-            _context = context;
+            _courseSubjectService = courseSubjectService;
             _mapper = mapper;
         }
 
         // GET: api/<CourseSubjectController>
         [HttpGet]
-        public IActionResult GetallCourseSubject()
+        public async Task<IActionResult> GetallCourseSubject()
         {
-            var courseSubjects = _context.CourseSubjects.ToList();
+            var courseSubjects = await _courseSubjectService.GetAllAsync();
             var courseSubjectDtos = _mapper.Map<List<CourseSubjectResponseDto>>(courseSubjects);
             return Ok(courseSubjectDtos);
         }
 
         // GET api/<CourseSubjectController>/5
         [HttpGet("{id}")]
-        public IActionResult GetCourseSubject(int id)
+        public async Task<IActionResult> GetCourseSubject(int id)
         {
-            var courseSubject = _context.CourseSubjects.Find(id);
+            var courseSubject = await _courseSubjectService.GetByIdAsync(id);
             if (courseSubject == null)
             {
                 return NotFound();
@@ -45,36 +45,35 @@ namespace EnrollmentManagementSystemAPI.Controllers
 
         // POST api/<CourseSubjectController>
         [HttpPost]
-        public IActionResult PostCourseSubject(CreateCourseSubjectDto courseSubjectDto) 
+        public async Task<IActionResult> PostCourseSubject(CreateCourseSubjectDto courseSubjectDto)
         {
             if (courseSubjectDto == null)
             {
                 return BadRequest();
             }
             var courseSubject = _mapper.Map<CourseSubject>(courseSubjectDto);
-            _context.CourseSubjects.Add(courseSubject);
-            _context.SaveChanges();
+            await _courseSubjectService.AddAsync(courseSubject);
             var createdCourseSubjectDto = _mapper.Map<CreateCourseSubjectDto>(courseSubject);
             return CreatedAtAction(nameof(GetCourseSubject), new { id = courseSubject.CourseSubjectId }, createdCourseSubjectDto);
         }
 
         // PUT api/<CourseSubjectController>/5
         [HttpPut("{id}")]
-        public IActionResult UpdateCourseSubject(int id, [FromBody] CreateCourseSubjectDto updateCourseSubject)
+        public async Task<IActionResult> UpdateCourseSubject(int id, [FromBody] CreateCourseSubjectDto updateCourseSubject)
         {
             if (updateCourseSubject == null)
             {
                 return BadRequest();
             }
 
-            var courseSubject = _context.CourseSubjects.Find(id);
+            var courseSubject = await _courseSubjectService.GetByIdAsync(id);
             if (courseSubject == null)
             {
                 return NotFound();
             }
 
             _mapper.Map(updateCourseSubject, courseSubject);
-            _context.SaveChanges();
+            await _courseSubjectService.UpdateAsync(courseSubject);
 
             var courseSubjectDto = _mapper.Map<CreateCourseSubjectDto>(courseSubject);
             return CreatedAtAction(nameof(GetCourseSubject), new { id = courseSubject.CourseSubjectId }, courseSubjectDto);
@@ -82,16 +81,15 @@ namespace EnrollmentManagementSystemAPI.Controllers
 
         // DELETE api/<CourseSubjectController>/5
         [HttpDelete("{id}")]
-        public IActionResult DeleteCourseSubject(int id)
+        public async Task<IActionResult> DeleteCourseSubject(int id)
         {
-            var courseSubject = _context.CourseSubjects.Find(id);
+            var courseSubject = await _courseSubjectService.GetByIdAsync(id);
             if (courseSubject == null)
             {
                 return NotFound();
             }
 
-            _context.CourseSubjects.Remove(courseSubject);
-            _context.SaveChanges();
+            await _courseSubjectService.DeleteAsync(id);
             return NoContent();
         }
     }

@@ -1,4 +1,6 @@
-﻿namespace EnrollmentManagementSystemAPI.Models.Entities
+using EnrollmentManagementSystemAPI.Models.Enums;
+
+namespace EnrollmentManagementSystemAPI.Models.Entities
 {
     public class Enrollment
     {
@@ -7,6 +9,11 @@
         public Student? Student { get; set; }
         public int SectionId { get; set; }
         public Section? Section { get; set; }
-        public string EnrolledOn { get; set; } = string.Empty;
+        public DateOnly EnrolledOn { get; set; }
+        public EnrollmentStatus Status { get; set; } = EnrollmentStatus.Pending;
+        public int UnitsEnrolled { get; set; }
+        public string ScholarshipType { get; set; } = string.Empty;
+        public string Remarks { get; set; } = string.Empty;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }

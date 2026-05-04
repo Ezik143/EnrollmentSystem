@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using EnrollmentManagementSystemAPI.data;
 using EnrollmentManagementSystemAPI.Models.Dto.Request;
 using EnrollmentManagementSystemAPI.Models.Dto.Response;
 using EnrollmentManagementSystemAPI.Models.Entities;
+using EnrollmentManagementSystemAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -13,30 +13,30 @@ namespace EnrollmentManagementSystemAPI.Controllers
     [ApiController]
     public class TermController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ITermService _termService;
         private readonly IMapper _mapper;
-        public TermController(ApplicationDbContext context, IMapper mapper) 
+        public TermController(ITermService termService, IMapper mapper)
         {
-            _context = context;
+            _termService = termService;
             _mapper = mapper;
         }
         // GET: api/<TermController>
         [HttpGet]
-        public IActionResult GetAllTerm()
+        public async Task<IActionResult> GetAllTerm()
         {
-            var term = _context.Term.ToList();
+            var term = await _termService.GetAllAsync();
             var termDtos = _mapper.Map<List<TermResponseDto>>(term);
             return Ok(termDtos);
         }
 
         // GET api/<TermController>/5
         [HttpGet("{id}")]
-        public IActionResult GetSubjectById(int id)
+        public async Task<IActionResult> GetSubjectById(int id)
         {
-            var term = _context.Term.Find(id);
+            var term = await _termService.GetByIdAsync(id);
             if (term == null)
             {
-                return BadRequest();
+                return NotFound();
             }
 
             var termDto = _mapper.Map<TermResponseDto>(term);
@@ -45,46 +45,44 @@ namespace EnrollmentManagementSystemAPI.Controllers
 
         // POST api/<TermController>
         [HttpPost]
-        public IActionResult CreateTerm([FromBody] CreateTermDto createTermDto)
+        public async Task<IActionResult> CreateTerm([FromBody] CreateTermDto createTermDto)
         {
-            if(createTermDto == null)
+            if (createTermDto == null)
             {
                 return BadRequest();
             }
 
             var term = _mapper.Map<Term>(createTermDto);
-            _context.Term.Add(term);
-            _context.SaveChanges();
+            await _termService.AddAsync(term);
             var termDto = _mapper.Map<TermResponseDto>(term);
             return CreatedAtAction(nameof(GetSubjectById), new { id = termDto.TermId }, termDto);
         }
 
         // PUT api/<TermController>/5
         [HttpPut("{id}")]
-        public IActionResult UpdateTerm(int id, [FromBody] CreateTermDto createTermDto)
+        public async Task<IActionResult> UpdateTerm(int id, [FromBody] CreateTermDto createTermDto)
         {
-            var term = _context.Term.Find(id);
+            var term = await _termService.GetByIdAsync(id);
             if (term == null)
             {
                 return NotFound();
             }
             _mapper.Map(createTermDto, term);
-            _context.SaveChanges();
+            await _termService.UpdateAsync(term);
             var termDto = _mapper.Map<TermResponseDto>(term);
             return Ok(termDto);
         }
 
         // DELETE api/<TermController>/5
         [HttpDelete("{id}")]
-        public IActionResult DeleteTerm(int id)
+        public async Task<IActionResult> DeleteTerm(int id)
         {
-            var term = _context.Term.Find(id);
-            if(term == null)
+            var term = await _termService.GetByIdAsync(id);
+            if (term == null)
             {
                 return NotFound();
             }
-            _context.Term.Remove(term);
-            _context.SaveChanges();
+            await _termService.DeleteAsync(id);
             return NoContent();
         }
     }

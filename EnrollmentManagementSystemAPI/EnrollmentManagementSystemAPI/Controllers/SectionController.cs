@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using EnrollmentManagementSystemAPI.data;
 using EnrollmentManagementSystemAPI.Models.Dto.Request;
 using EnrollmentManagementSystemAPI.Models.Dto.Response;
 using EnrollmentManagementSystemAPI.Models.Entities;
+using EnrollmentManagementSystemAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -13,29 +13,29 @@ namespace EnrollmentManagementSystemAPI.Controllers
     [ApiController]
     public class SectionController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ISectionService _sectionService;
         private readonly IMapper _mapper;
 
-        public SectionController(ApplicationDbContext context, IMapper mapper) 
+        public SectionController(ISectionService sectionService, IMapper mapper)
         {
-            _context = context;
+            _sectionService = sectionService;
             _mapper = mapper;
         }
         // GET: api/<SectionController>
         [HttpGet]
-        public IActionResult GetSectionById()
+        public async Task<IActionResult> GetSectionById()
         {
-            var sections = _context.Sections.ToList();
+            var sections = await _sectionService.GetAllAsync();
             var sectionDtos = _mapper.Map<List<SectionResponseDto>>(sections);
             return Ok(sectionDtos);
         }
 
         // GET api/<SectionController>/5
         [HttpGet("{id}")]
-        public IActionResult GetSectionById(int id)
+        public async Task<IActionResult> GetSectionById(int id)
         {
-            var section = _context.Sections.Find(id);
-            if(section == null)
+            var section = await _sectionService.GetByIdAsync(id);
+            if (section == null)
             {
                 return NotFound();
             }
@@ -46,7 +46,7 @@ namespace EnrollmentManagementSystemAPI.Controllers
 
         // POST api/<SectionController>
         [HttpPost]
-        public IActionResult CreateSection([FromBody] CreateSectionDto createSectionRequest)
+        public async Task<IActionResult> CreateSection([FromBody] CreateSectionDto createSectionRequest)
         {
             if (createSectionRequest == null)
             {
@@ -54,39 +54,43 @@ namespace EnrollmentManagementSystemAPI.Controllers
             }
 
             var sections = _mapper.Map<Section>(createSectionRequest);
-            _context.Sections.Add(sections);
-            _context.SaveChanges();
-            
+            await _sectionService.AddAsync(sections);
+
             var sectionDto = _mapper.Map<SectionResponseDto>(sections);
             return CreatedAtAction(nameof(GetSectionById), new { id = sectionDto.SectionId }, sectionDto);
         }
 
         // PUT api/<SectionController>/5
         [HttpPut("{id}")]
-        public IActionResult UpdateSection(int id, [FromBody] CreateSectionDto updateSectionRequest)
+        public async Task<IActionResult> UpdateSection(int id, [FromBody] CreateSectionDto updateSectionRequest)
         {
-            var Section = _context.Sections.Find(id);
-            if (Section == null)
+            if (updateSectionRequest == null)
+            {
+                return BadRequest();
+            }
+
+            var section = await _sectionService.GetByIdAsync(id);
+            if (section == null)
             {
                 return NotFound();
             }
-            var UpdateSection = _mapper.Map(updateSectionRequest, Section);
-            _context.SaveChanges();
-            var sectionDto = _mapper.Map<SectionResponseDto>(UpdateSection);
+
+            _mapper.Map(updateSectionRequest, section);
+            await _sectionService.UpdateAsync(section);
+            var sectionDto = _mapper.Map<SectionResponseDto>(section);
             return Ok(sectionDto);
         }
 
         // DELETE api/<SectionController>/5
         [HttpDelete("{id}")]
-        public IActionResult DeleteSection(int id)
+        public async Task<IActionResult> DeleteSection(int id)
         {
-            var section = _context.Sections.Find(id);
+            var section = await _sectionService.GetByIdAsync(id);
             if (section == null)
             {
                 return NotFound();
             }
-            _context.Sections.Remove(section);
-            _context.SaveChanges();
+            await _sectionService.DeleteAsync(id);
             return NoContent();
         }
     }
