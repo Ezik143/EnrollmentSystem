@@ -31,8 +31,8 @@ namespace EnrollmentManagementSystemAPI.Models.Dto.Request
         [Required, DataType(DataType.Date)]
         public DateOnly DateOfBirth { get; set; }
 
-        [Required, StringLength(30)]
-        public string Gender { get; set; } = string.Empty;
+        [Required]
+        public Sex Sex { get; set; }
 
         [StringLength(30)]
         public string CivilStatus { get; set; } = string.Empty;

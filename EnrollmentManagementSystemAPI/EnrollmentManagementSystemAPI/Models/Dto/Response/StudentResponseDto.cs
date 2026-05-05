@@ -14,7 +14,7 @@ namespace EnrollmentManagementSystemAPI.Models.Dto.Response
         public string LastName { get; set; } = string.Empty;
         public string Suffix { get; set; } = string.Empty;
         public DateOnly DateOfBirth { get; set; }
-        public string Gender { get; set; } = string.Empty;
+        public Sex Sex { get; set; }
         public string CivilStatus { get; set; } = string.Empty;
         public string Citizenship { get; set; } = string.Empty;
         public string BirthPlace { get; set; } = string.Empty;
