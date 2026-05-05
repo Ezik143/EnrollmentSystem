@@ -5,7 +5,7 @@ namespace EnrollmentManagementSystemAPI.Validators
 {
     public class CreateCourseDtoValidator : AbstractValidator<CreateCourseDto>
     {
-        public CreateCourseDtoValidator() 
+        public CreateCourseDtoValidator()
         {
             RuleFor(x => x.CourseName)
                 .NotEmpty().WithMessage("Course name is required.")
