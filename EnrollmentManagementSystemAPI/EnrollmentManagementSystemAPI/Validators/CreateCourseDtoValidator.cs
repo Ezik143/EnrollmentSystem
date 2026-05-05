@@ -20,6 +20,8 @@ namespace EnrollmentManagementSystemAPI.Validators
                 .MaximumLength(500).WithMessage("Description cannot exceed 500 characters.");
             RuleFor(x => x.DepartmentId)
                 .GreaterThan(0).WithMessage("Department ID must be greater than 0.");
+            RuleFor(x => x.EducationLevel)
+                .IsInEnum().WithMessage("Education level is invalid.");
             RuleFor(x => x.YearDuration)
                 .InclusiveBetween(1, 12).WithMessage("Year duration must be between 1 and 12.");
             RuleFor(x => x.CurriculumYear)

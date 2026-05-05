@@ -2,6 +2,8 @@ using EnrollmentManagementSystemAPI.data;
 using EnrollmentManagementSystemAPI.Repositories;
 using EnrollmentManagementSystemAPI.Services.Implementations;
 using EnrollmentManagementSystemAPI.Services.Interfaces;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
@@ -10,6 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddOpenApi();
 builder.Services.AddControllers();
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 builder.Services.AddAutoMapper(typeof(Program));
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
