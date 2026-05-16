@@ -14,7 +14,7 @@ namespace EnrollmentManagementSystemAPI.Controllers
     public class DepartmentController : ControllerBase
     {
         private readonly IDepartmentService _departmentService;
-        private readonly AutoMapper.IMapper _mapper;
+        private readonly IMapper _mapper;
 
         public DepartmentController(IDepartmentService departmentService, IMapper mapper)
         {

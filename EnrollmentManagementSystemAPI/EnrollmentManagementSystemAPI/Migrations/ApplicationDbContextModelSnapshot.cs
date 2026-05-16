@@ -406,11 +406,6 @@ namespace EnrollmentManagementSystemAPI.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
-                    b.Property<string>("Gender")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
-
                     b.Property<string>("GuardianContactNumber")
                         .IsRequired()
                         .HasMaxLength(30)
@@ -488,6 +483,10 @@ namespace EnrollmentManagementSystemAPI.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
+
+                    b.Property<int>("Sex")
+                        .HasMaxLength(30)
+                        .HasColumnType("integer");
 
                     b.Property<string>("StudentNumber")
                         .IsRequired()

@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using EnrollmentManagementSystemAPI.data;
 using EnrollmentManagementSystemAPI.Models.Dto.Request;
 using EnrollmentManagementSystemAPI.Models.Dto.Response;
 using EnrollmentManagementSystemAPI.Models.Entities;
 using EnrollmentManagementSystemAPI.Services.Interfaces;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -17,11 +17,13 @@ namespace EnrollmentManagementSystemAPI.Controllers
 
         private readonly IMapper _mapper;
         private readonly ICourseService _courseService;
+        private readonly IValidator<CreateCourseDto> _createCourseDtoValidator;
 
-        public CourseController(ICourseService courseService, IMapper mapper)
+        public CourseController(IValidator<CreateCourseDto> createCourseDtoValidator, ICourseService courseService, IMapper mapper)
         {
             _courseService = courseService;
             _mapper = mapper;
+            _createCourseDtoValidator = createCourseDtoValidator;
         }
 
         // GET: api/<CourseController>
@@ -33,7 +35,7 @@ namespace EnrollmentManagementSystemAPI.Controllers
             return Ok(courseDtos);
         }
 
-        // GET api/<CourseController>/5
+        // GET api/<CourseController>/
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCourse(int id)
         {
@@ -50,11 +52,13 @@ namespace EnrollmentManagementSystemAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateCourse([FromBody] CreateCourseDto createCourse)
         {
-            if (createCourse == null)
+            var result = await _createCourseDtoValidator.ValidateAsync(createCourse);
+
+            if (!result.IsValid)
             {
-                return BadRequest();
+                return BadRequest(new ValidationProblemDetails(result.ToDictionary()));
             }
-            
+
             var course = _mapper.Map<Course>(createCourse);
             await _courseService.AddAsync(course);
 
@@ -66,13 +70,14 @@ namespace EnrollmentManagementSystemAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCourse(int id, [FromBody] CreateCourseDto updateCourse)
         {
-            if(updateCourse == null)
-            {   
-                return BadRequest();
+            var result = await _createCourseDtoValidator.ValidateAsync(updateCourse);
+            if (!result.IsValid)
+            {
+                return BadRequest(new ValidationProblemDetails(result.ToDictionary()));
             }
 
             var course = await _courseService.GetByIdAsync(id);
-            if(course == null)
+            if (course == null)
             {
                 return NotFound();
             }
