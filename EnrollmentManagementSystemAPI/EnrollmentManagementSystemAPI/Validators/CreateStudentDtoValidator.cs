@@ -12,6 +12,9 @@ namespace EnrollmentManagementSystemAPI.Validators
                 .GreaterThan(0).WithMessage("Course ID must be greater than 0.")
                 .When(x => x.CourseId.HasValue);
 
+            RuleFor(x => x.UserId)
+                .GreaterThan(0).WithMessage("User ID must be greater than 0.");
+
             RuleFor(x => x.StudentNumber)
                 .NotEmpty().WithMessage("Student number is required.")
                 .MaximumLength(30).WithMessage("Student number cannot exceed 30 characters.");

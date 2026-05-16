@@ -45,7 +45,7 @@ namespace EnrollmentManagementSystemAPI.Controllers
 
         // POST api/<InstructorController>
         [HttpPost]
-        public async Task<IActionResult> CreateInstructor([FromBody] CreateInstructorDto createInstructorDto)
+        public async Task<IActionResult> CreateInstructor(CreateInstructorDto createInstructorDto)
         {
             if (createInstructorDto == null)
             {
@@ -60,7 +60,7 @@ namespace EnrollmentManagementSystemAPI.Controllers
 
         // PUT api/<InstructorController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateInstructor(int id, [FromBody] CreateInstructorDto updateInstructorDto)
+        public async Task<IActionResult> UpdateInstructor(int id, CreateInstructorDto updateInstructorDto)
         {
             if (updateInstructorDto == null)
             {

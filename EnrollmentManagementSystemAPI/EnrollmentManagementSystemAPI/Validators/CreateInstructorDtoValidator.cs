@@ -9,9 +9,14 @@ namespace EnrollmentManagementSystemAPI.Validators
         {
             RuleFor(x => x.DepartmentId)
                 .GreaterThan(0).WithMessage("Department ID must be greater than 0.");
+
+            RuleFor(x => x.UserId)
+                .GreaterThan(0).WithMessage("User ID must be greater than 0.");
+
             RuleFor(x => x.EmployeeNumber)
                 .NotEmpty().WithMessage("Employee number is required.")
                 .MaximumLength(30).WithMessage("Employee number cannot exceed 30 characters.");
+
 
             RuleFor(x => x.FirstName)
                 .NotEmpty().WithMessage("First name is required.")

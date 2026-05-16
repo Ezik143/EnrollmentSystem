@@ -5,6 +5,7 @@ namespace EnrollmentManagementSystemAPI.Models.Dto.Request
     public class CreateStudentDto
     {
         public int DepartmentId { get; set; }
+        public int UserId { get; set; }
 
         public int? CourseId { get; set; }
 

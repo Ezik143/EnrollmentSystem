@@ -59,7 +59,7 @@ namespace EnrollmentManagementSystemAPI.Controllers
 
         // PUT api/<CourseSubjectController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCourseSubject(int id, [FromBody] CreateCourseSubjectDto updateCourseSubject)
+        public async Task<IActionResult> UpdateCourseSubject(int id, CreateCourseSubjectDto updateCourseSubject)
         {
             if (updateCourseSubject == null)
             {

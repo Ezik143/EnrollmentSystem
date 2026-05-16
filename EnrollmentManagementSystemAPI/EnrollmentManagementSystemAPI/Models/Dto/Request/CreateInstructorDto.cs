@@ -3,6 +3,7 @@ namespace EnrollmentManagementSystemAPI.Models.Dto.Request
     public class CreateInstructorDto
     {
         public int DepartmentId { get; set; }
+        public int UserId { get; set; }
 
         public string EmployeeNumber { get; set; } = string.Empty;
 

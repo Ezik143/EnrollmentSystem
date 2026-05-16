@@ -44,7 +44,7 @@ namespace EnrollmentManagementSystemAPI.Controllers
 
         // POST api/<StudentController>
         [HttpPost]
-        public async Task<IActionResult> CreateStudent([FromBody] CreateStudentDto createStudentDto)
+        public async Task<IActionResult> CreateStudent(CreateStudentDto createStudentDto)
         {
             if (createStudentDto == null)
             {
@@ -61,7 +61,7 @@ namespace EnrollmentManagementSystemAPI.Controllers
 
         // PUT api/<StudentController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateStudent(int id, [FromBody] CreateStudentDto updateStudentDto)
+        public async Task<IActionResult> UpdateStudent(int id, CreateStudentDto updateStudentDto)
         {
             var student = await _studentService.GetByIdAsync(id);
             if (student == null)
