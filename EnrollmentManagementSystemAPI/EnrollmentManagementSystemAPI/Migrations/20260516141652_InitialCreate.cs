@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EnrollmentManagementSystemAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class intialCreate : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,10 +18,10 @@ namespace EnrollmentManagementSystemAPI.Migrations
                 {
                     DepartmentId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    DepartmentCode = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
-                    Name = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false),
+                    DepartmentCode = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
                     EducationAuthority = table.Column<int>(type: "integer", nullable: false),
-                    Campus = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false),
+                    Campus = table.Column<string>(type: "text", nullable: false),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
@@ -36,9 +36,9 @@ namespace EnrollmentManagementSystemAPI.Migrations
                     TermId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     TermCode = table.Column<int>(type: "integer", nullable: false),
-                    AcademicYear = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
+                    AcademicYear = table.Column<string>(type: "text", nullable: false),
                     TermType = table.Column<int>(type: "integer", nullable: false),
-                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
                     StartDate = table.Column<DateOnly>(type: "date", nullable: false),
                     EndDate = table.Column<DateOnly>(type: "date", nullable: false),
                     EnrollmentStartDate = table.Column<DateOnly>(type: "date", nullable: false),
@@ -56,18 +56,18 @@ namespace EnrollmentManagementSystemAPI.Migrations
                 {
                     CourseId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    CourseName = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false),
-                    CourseCode = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
+                    CourseName = table.Column<string>(type: "text", nullable: false),
+                    CourseCode = table.Column<string>(type: "text", nullable: false),
                     TotalUnits = table.Column<int>(type: "integer", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false),
                     DepartmentId = table.Column<int>(type: "integer", nullable: false),
                     EducationLevel = table.Column<int>(type: "integer", nullable: false),
                     YearDuration = table.Column<int>(type: "integer", nullable: false),
-                    CurriculumYear = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
-                    ChedProgramCode = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: true),
-                    SeniorHighTrack = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
-                    SeniorHighStrand = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true)
+                    CurriculumYear = table.Column<string>(type: "text", nullable: false),
+                    ChedProgramCode = table.Column<string>(type: "text", nullable: true),
+                    SeniorHighTrack = table.Column<string>(type: "text", nullable: true),
+                    SeniorHighStrand = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -87,15 +87,15 @@ namespace EnrollmentManagementSystemAPI.Migrations
                     InstructorId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     DepartmentId = table.Column<int>(type: "integer", nullable: false),
-                    EmployeeNumber = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
-                    FirstName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    MiddleName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    LastName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    Suffix = table.Column<string>(type: "character varying(15)", maxLength: 15, nullable: false),
-                    Email = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Rank = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    EmploymentType = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    ContactNumber = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
+                    EmployeeNumber = table.Column<string>(type: "text", nullable: false),
+                    FirstName = table.Column<string>(type: "text", nullable: false),
+                    MiddleName = table.Column<string>(type: "text", nullable: false),
+                    LastName = table.Column<string>(type: "text", nullable: false),
+                    Suffix = table.Column<string>(type: "text", nullable: false),
+                    Email = table.Column<string>(type: "text", nullable: false),
+                    Rank = table.Column<string>(type: "text", nullable: false),
+                    EmploymentType = table.Column<string>(type: "text", nullable: false),
+                    ContactNumber = table.Column<string>(type: "text", nullable: false),
                     HireDate = table.Column<DateOnly>(type: "date", nullable: false),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false)
                 },
@@ -117,8 +117,8 @@ namespace EnrollmentManagementSystemAPI.Migrations
                     SubjectId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     DepartmentId = table.Column<int>(type: "integer", nullable: false),
-                    SubjectCode = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
-                    Title = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false),
+                    SubjectCode = table.Column<string>(type: "text", nullable: false),
+                    Title = table.Column<string>(type: "text", nullable: false),
                     LectureUnits = table.Column<int>(type: "integer", nullable: false),
                     LaboratoryUnits = table.Column<int>(type: "integer", nullable: false),
                     Units = table.Column<int>(type: "integer", nullable: false),
@@ -141,8 +141,7 @@ namespace EnrollmentManagementSystemAPI.Migrations
                         name: "FK_Subjects_Subjects_PrerequisiteSubjectId",
                         column: x => x.PrerequisiteSubjectId,
                         principalTable: "Subjects",
-                        principalColumn: "SubjectId",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "SubjectId");
                 });
 
             migrationBuilder.CreateTable(
@@ -153,37 +152,37 @@ namespace EnrollmentManagementSystemAPI.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     DepartmentId = table.Column<int>(type: "integer", nullable: false),
                     CourseId = table.Column<int>(type: "integer", nullable: true),
-                    StudentNumber = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
-                    LearnerReferenceNumber = table.Column<string>(type: "character varying(12)", maxLength: 12, nullable: true),
-                    FirstName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    MiddleName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    LastName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    Suffix = table.Column<string>(type: "character varying(15)", maxLength: 15, nullable: false),
+                    StudentNumber = table.Column<string>(type: "text", nullable: false),
+                    LearnerReferenceNumber = table.Column<string>(type: "text", nullable: true),
+                    FirstName = table.Column<string>(type: "text", nullable: false),
+                    MiddleName = table.Column<string>(type: "text", nullable: false),
+                    LastName = table.Column<string>(type: "text", nullable: false),
+                    Suffix = table.Column<string>(type: "text", nullable: false),
                     DateOfBirth = table.Column<DateOnly>(type: "date", nullable: false),
-                    Sex = table.Column<int>(type: "integer", maxLength: 30, nullable: false),
-                    CivilStatus = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
-                    Citizenship = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false),
-                    BirthPlace = table.Column<string>(type: "character varying(120)", maxLength: 120, nullable: false),
-                    Email = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
-                    HouseStreet = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false),
-                    Barangay = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    CityMunicipality = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Province = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Region = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    PostalCode = table.Column<string>(type: "character varying(15)", maxLength: 15, nullable: false),
-                    GuardianName = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false),
-                    GuardianRelationship = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    GuardianContactNumber = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
+                    Sex = table.Column<int>(type: "integer", nullable: false),
+                    CivilStatus = table.Column<string>(type: "text", nullable: false),
+                    Citizenship = table.Column<string>(type: "text", nullable: false),
+                    BirthPlace = table.Column<string>(type: "text", nullable: false),
+                    Email = table.Column<string>(type: "text", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "text", nullable: false),
+                    HouseStreet = table.Column<string>(type: "text", nullable: false),
+                    Barangay = table.Column<string>(type: "text", nullable: false),
+                    CityMunicipality = table.Column<string>(type: "text", nullable: false),
+                    Province = table.Column<string>(type: "text", nullable: false),
+                    Region = table.Column<string>(type: "text", nullable: false),
+                    PostalCode = table.Column<string>(type: "text", nullable: false),
+                    GuardianName = table.Column<string>(type: "text", nullable: false),
+                    GuardianRelationship = table.Column<string>(type: "text", nullable: false),
+                    GuardianContactNumber = table.Column<string>(type: "text", nullable: false),
                     AdmissionType = table.Column<int>(type: "integer", nullable: false),
                     EducationLevel = table.Column<int>(type: "integer", nullable: false),
-                    SeniorHighTrack = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    SeniorHighStrand = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    SeniorHighTrack = table.Column<string>(type: "text", nullable: false),
+                    SeniorHighStrand = table.Column<string>(type: "text", nullable: false),
                     YearLevel = table.Column<int>(type: "integer", nullable: false),
                     DateAdmitted = table.Column<DateOnly>(type: "date", nullable: false),
                     IsFourPsBeneficiary = table.Column<bool>(type: "boolean", nullable: false),
                     IsIndigenousPeople = table.Column<bool>(type: "boolean", nullable: false),
-                    IndigenousGroup = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    IndigenousGroup = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false)
                 },
@@ -214,7 +213,7 @@ namespace EnrollmentManagementSystemAPI.Migrations
                     YearLevel = table.Column<int>(type: "integer", nullable: false),
                     TermNumber = table.Column<int>(type: "integer", nullable: false),
                     IsRequired = table.Column<bool>(type: "boolean", nullable: false),
-                    Remarks = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false)
+                    Remarks = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -244,10 +243,10 @@ namespace EnrollmentManagementSystemAPI.Migrations
                     CourseSubjectId = table.Column<int>(type: "integer", nullable: false),
                     TermId = table.Column<int>(type: "integer", nullable: false),
                     Capacity = table.Column<int>(type: "integer", nullable: false),
-                    Name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    Room = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    Schedule = table.Column<string>(type: "character varying(120)", maxLength: 120, nullable: false),
-                    Campus = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Room = table.Column<string>(type: "text", nullable: false),
+                    Schedule = table.Column<string>(type: "text", nullable: false),
+                    Campus = table.Column<string>(type: "text", nullable: false),
                     YearLevel = table.Column<int>(type: "integer", nullable: false),
                     IsOpen = table.Column<bool>(type: "boolean", nullable: false)
                 },
@@ -291,8 +290,8 @@ namespace EnrollmentManagementSystemAPI.Migrations
                     EnrolledOn = table.Column<DateOnly>(type: "date", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false),
                     UnitsEnrolled = table.Column<int>(type: "integer", nullable: false),
-                    ScholarshipType = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Remarks = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false),
+                    ScholarshipType = table.Column<string>(type: "text", nullable: false),
+                    Remarks = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
@@ -313,21 +312,14 @@ namespace EnrollmentManagementSystemAPI.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Courses_CourseCode",
-                table: "Courses",
-                column: "CourseCode",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Courses_DepartmentId",
                 table: "Courses",
                 column: "DepartmentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CourseSubjects_CourseId_SubjectId_YearLevel_TermNumber",
+                name: "IX_CourseSubjects_CourseId",
                 table: "CourseSubjects",
-                columns: new[] { "CourseId", "SubjectId", "YearLevel", "TermNumber" },
-                unique: true);
+                column: "CourseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CourseSubjects_SubjectId",
@@ -335,32 +327,19 @@ namespace EnrollmentManagementSystemAPI.Migrations
                 column: "SubjectId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Departments_DepartmentCode",
-                table: "Departments",
-                column: "DepartmentCode",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Enrollments_SectionId",
                 table: "Enrollments",
                 column: "SectionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Enrollments_StudentId_SectionId",
+                name: "IX_Enrollments_StudentId",
                 table: "Enrollments",
-                columns: new[] { "StudentId", "SectionId" },
-                unique: true);
+                column: "StudentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Instructors_DepartmentId",
                 table: "Instructors",
                 column: "DepartmentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Instructors_EmployeeNumber",
-                table: "Instructors",
-                column: "EmployeeNumber",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Sections_CourseId",
@@ -378,10 +357,9 @@ namespace EnrollmentManagementSystemAPI.Migrations
                 column: "InstructorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Sections_TermId_CourseSubjectId_Name",
+                name: "IX_Sections_TermId",
                 table: "Sections",
-                columns: new[] { "TermId", "CourseSubjectId", "Name" },
-                unique: true);
+                column: "TermId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Students_CourseId",
@@ -394,18 +372,6 @@ namespace EnrollmentManagementSystemAPI.Migrations
                 column: "DepartmentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Students_LearnerReferenceNumber",
-                table: "Students",
-                column: "LearnerReferenceNumber",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Students_StudentNumber",
-                table: "Students",
-                column: "StudentNumber",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Subjects_DepartmentId",
                 table: "Subjects",
                 column: "DepartmentId");
@@ -414,18 +380,6 @@ namespace EnrollmentManagementSystemAPI.Migrations
                 name: "IX_Subjects_PrerequisiteSubjectId",
                 table: "Subjects",
                 column: "PrerequisiteSubjectId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Subjects_SubjectCode",
-                table: "Subjects",
-                column: "SubjectCode",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Term_AcademicYear_TermType",
-                table: "Term",
-                columns: new[] { "AcademicYear", "TermType" },
-                unique: true);
         }
 
         /// <inheritdoc />

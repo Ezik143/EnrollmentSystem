@@ -31,23 +31,19 @@ namespace EnrollmentManagementSystemAPI.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("CourseId"));
 
                     b.Property<string>("ChedProgramCode")
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
+                        .HasColumnType("text");
 
                     b.Property<string>("CourseCode")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
+                        .HasColumnType("text");
 
                     b.Property<string>("CourseName")
                         .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("character varying(150)");
+                        .HasColumnType("text");
 
                     b.Property<string>("CurriculumYear")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
+                        .HasColumnType("text");
 
                     b.Property<int>("DepartmentId")
                         .HasColumnType("integer");
@@ -63,12 +59,10 @@ namespace EnrollmentManagementSystemAPI.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("SeniorHighStrand")
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("text");
 
                     b.Property<string>("SeniorHighTrack")
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("text");
 
                     b.Property<int>("TotalUnits")
                         .HasColumnType("integer");
@@ -77,9 +71,6 @@ namespace EnrollmentManagementSystemAPI.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("CourseId");
-
-                    b.HasIndex("CourseCode")
-                        .IsUnique();
 
                     b.HasIndex("DepartmentId");
 
@@ -102,8 +93,7 @@ namespace EnrollmentManagementSystemAPI.Migrations
 
                     b.Property<string>("Remarks")
                         .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("character varying(250)");
+                        .HasColumnType("text");
 
                     b.Property<int>("SubjectId")
                         .HasColumnType("integer");
@@ -116,10 +106,9 @@ namespace EnrollmentManagementSystemAPI.Migrations
 
                     b.HasKey("CourseSubjectId");
 
-                    b.HasIndex("SubjectId");
+                    b.HasIndex("CourseId");
 
-                    b.HasIndex("CourseId", "SubjectId", "YearLevel", "TermNumber")
-                        .IsUnique();
+                    b.HasIndex("SubjectId");
 
                     b.ToTable("CourseSubjects");
                 });
@@ -134,13 +123,11 @@ namespace EnrollmentManagementSystemAPI.Migrations
 
                     b.Property<string>("Campus")
                         .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("character varying(150)");
+                        .HasColumnType("text");
 
                     b.Property<string>("DepartmentCode")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
+                        .HasColumnType("text");
 
                     b.Property<int>("EducationAuthority")
                         .HasColumnType("integer");
@@ -150,13 +137,9 @@ namespace EnrollmentManagementSystemAPI.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("character varying(150)");
+                        .HasColumnType("text");
 
                     b.HasKey("DepartmentId");
-
-                    b.HasIndex("DepartmentCode")
-                        .IsUnique();
 
                     b.ToTable("Departments");
                 });
@@ -177,13 +160,11 @@ namespace EnrollmentManagementSystemAPI.Migrations
 
                     b.Property<string>("Remarks")
                         .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("character varying(250)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ScholarshipType")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("text");
 
                     b.Property<int>("SectionId")
                         .HasColumnType("integer");
@@ -201,8 +182,7 @@ namespace EnrollmentManagementSystemAPI.Migrations
 
                     b.HasIndex("SectionId");
 
-                    b.HasIndex("StudentId", "SectionId")
-                        .IsUnique();
+                    b.HasIndex("StudentId");
 
                     b.ToTable("Enrollments");
                 });
@@ -217,31 +197,26 @@ namespace EnrollmentManagementSystemAPI.Migrations
 
                     b.Property<string>("ContactNumber")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
+                        .HasColumnType("text");
 
                     b.Property<int>("DepartmentId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("text");
 
                     b.Property<string>("EmployeeNumber")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
+                        .HasColumnType("text");
 
                     b.Property<string>("EmploymentType")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("text");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("text");
 
                     b.Property<DateOnly>("HireDate")
                         .HasColumnType("date");
@@ -251,30 +226,23 @@ namespace EnrollmentManagementSystemAPI.Migrations
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("text");
 
                     b.Property<string>("MiddleName")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Rank")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Suffix")
                         .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("character varying(15)");
+                        .HasColumnType("text");
 
                     b.HasKey("InstructorId");
 
                     b.HasIndex("DepartmentId");
-
-                    b.HasIndex("EmployeeNumber")
-                        .IsUnique();
 
                     b.ToTable("Instructors");
                 });
@@ -289,8 +257,7 @@ namespace EnrollmentManagementSystemAPI.Migrations
 
                     b.Property<string>("Campus")
                         .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("character varying(150)");
+                        .HasColumnType("text");
 
                     b.Property<int>("Capacity")
                         .HasColumnType("integer");
@@ -309,18 +276,15 @@ namespace EnrollmentManagementSystemAPI.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Room")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Schedule")
                         .IsRequired()
-                        .HasMaxLength(120)
-                        .HasColumnType("character varying(120)");
+                        .HasColumnType("text");
 
                     b.Property<int>("TermId")
                         .HasColumnType("integer");
@@ -336,8 +300,7 @@ namespace EnrollmentManagementSystemAPI.Migrations
 
                     b.HasIndex("InstructorId");
 
-                    b.HasIndex("TermId", "CourseSubjectId", "Name")
-                        .IsUnique();
+                    b.HasIndex("TermId");
 
                     b.ToTable("Sections");
                 });
@@ -355,28 +318,23 @@ namespace EnrollmentManagementSystemAPI.Migrations
 
                     b.Property<string>("Barangay")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("text");
 
                     b.Property<string>("BirthPlace")
                         .IsRequired()
-                        .HasMaxLength(120)
-                        .HasColumnType("character varying(120)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Citizenship")
                         .IsRequired()
-                        .HasMaxLength(60)
-                        .HasColumnType("character varying(60)");
+                        .HasColumnType("text");
 
                     b.Property<string>("CityMunicipality")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("text");
 
                     b.Property<string>("CivilStatus")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
+                        .HasColumnType("text");
 
                     b.Property<int?>("CourseId")
                         .HasColumnType("integer");
@@ -398,38 +356,31 @@ namespace EnrollmentManagementSystemAPI.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("text");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("text");
 
                     b.Property<string>("GuardianContactNumber")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
+                        .HasColumnType("text");
 
                     b.Property<string>("GuardianName")
                         .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("character varying(150)");
+                        .HasColumnType("text");
 
                     b.Property<string>("GuardianRelationship")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("text");
 
                     b.Property<string>("HouseStreet")
                         .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("character varying(150)");
+                        .HasColumnType("text");
 
                     b.Property<string>("IndigenousGroup")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("text");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
@@ -442,61 +393,49 @@ namespace EnrollmentManagementSystemAPI.Migrations
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("text");
 
                     b.Property<string>("LearnerReferenceNumber")
-                        .HasMaxLength(12)
-                        .HasColumnType("character varying(12)");
+                        .HasColumnType("text");
 
                     b.Property<string>("MiddleName")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("text");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
+                        .HasColumnType("text");
 
                     b.Property<string>("PostalCode")
                         .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("character varying(15)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Province")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Region")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("text");
 
                     b.Property<string>("SeniorHighStrand")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("text");
 
                     b.Property<string>("SeniorHighTrack")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("text");
 
                     b.Property<int>("Sex")
-                        .HasMaxLength(30)
                         .HasColumnType("integer");
 
                     b.Property<string>("StudentNumber")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Suffix")
                         .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("character varying(15)");
+                        .HasColumnType("text");
 
                     b.Property<int>("YearLevel")
                         .HasColumnType("integer");
@@ -506,12 +445,6 @@ namespace EnrollmentManagementSystemAPI.Migrations
                     b.HasIndex("CourseId");
 
                     b.HasIndex("DepartmentId");
-
-                    b.HasIndex("LearnerReferenceNumber")
-                        .IsUnique();
-
-                    b.HasIndex("StudentNumber")
-                        .IsUnique();
 
                     b.ToTable("Students");
                 });
@@ -544,16 +477,14 @@ namespace EnrollmentManagementSystemAPI.Migrations
 
                     b.Property<string>("SubjectCode")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
+                        .HasColumnType("text");
 
                     b.Property<int>("TermNumber")
                         .HasColumnType("integer");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("character varying(150)");
+                        .HasColumnType("text");
 
                     b.Property<int>("Units")
                         .HasColumnType("integer");
@@ -566,9 +497,6 @@ namespace EnrollmentManagementSystemAPI.Migrations
                     b.HasIndex("DepartmentId");
 
                     b.HasIndex("PrerequisiteSubjectId");
-
-                    b.HasIndex("SubjectCode")
-                        .IsUnique();
 
                     b.ToTable("Subjects");
                 });
@@ -583,8 +511,7 @@ namespace EnrollmentManagementSystemAPI.Migrations
 
                     b.Property<string>("AcademicYear")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
+                        .HasColumnType("text");
 
                     b.Property<DateOnly>("EndDate")
                         .HasColumnType("date");
@@ -600,8 +527,7 @@ namespace EnrollmentManagementSystemAPI.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("text");
 
                     b.Property<DateOnly>("StartDate")
                         .HasColumnType("date");
@@ -614,10 +540,7 @@ namespace EnrollmentManagementSystemAPI.Migrations
 
                     b.HasKey("TermId");
 
-                    b.HasIndex("AcademicYear", "TermType")
-                        .IsUnique();
-
-                    b.ToTable("Term", (string)null);
+                    b.ToTable("Term");
                 });
 
             modelBuilder.Entity("EnrollmentManagementSystemAPI.Models.Entities.Course", b =>
@@ -742,8 +665,7 @@ namespace EnrollmentManagementSystemAPI.Migrations
 
                     b.HasOne("EnrollmentManagementSystemAPI.Models.Entities.Subject", "PrerequisiteSubject")
                         .WithMany("DependentSubjects")
-                        .HasForeignKey("PrerequisiteSubjectId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("PrerequisiteSubjectId");
 
                     b.Navigation("Department");
 

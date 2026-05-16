@@ -24,7 +24,7 @@ namespace EnrollmentManagementSystemAPI.Models.Dto.Request
 
         public Sex Sex { get; set; }
 
-        public string CivilStatus { get; set; } = string.Empty;
+        public CivilStatus CivilStatus { get; set; } = CivilStatus.Single;
 
         public string Citizenship { get; set; } = string.Empty;
 

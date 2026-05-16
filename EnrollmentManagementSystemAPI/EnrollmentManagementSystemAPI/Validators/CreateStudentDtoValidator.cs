@@ -41,8 +41,9 @@ namespace EnrollmentManagementSystemAPI.Validators
 
             RuleFor(x => x.Sex)
                 .IsInEnum().WithMessage("Sex is invalid.");
+
             RuleFor(x => x.CivilStatus)
-                .MaximumLength(30).WithMessage("Civil status cannot exceed 30 characters.");
+                .IsInEnum().WithMessage("Civil status is invalid.");
 
             RuleFor(x => x.Citizenship)
                 .MaximumLength(60).WithMessage("Citizenship cannot exceed 60 characters.");
