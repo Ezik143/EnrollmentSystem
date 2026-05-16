@@ -7,8 +7,6 @@ namespace EnrollmentManagementSystemAPI.Validators
     {
         public CreateStudentDtoValidator()
         {
-            RuleFor(x => x.DepartmentId)
-                .GreaterThan(0).WithMessage("Department ID must be greater than 0.");
 
             RuleFor(x => x.CourseId)
                 .GreaterThan(0).WithMessage("Course ID must be greater than 0.")

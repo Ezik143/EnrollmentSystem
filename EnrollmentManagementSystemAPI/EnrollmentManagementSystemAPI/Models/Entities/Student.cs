@@ -5,8 +5,6 @@ namespace EnrollmentManagementSystemAPI.Models.Entities
     public class Student
     {
         public int StudentId { get; set; }
-        public int DepartmentId { get; set; }
-        public Department? Department { get; set; }
         public int? CourseId { get; set; }
         public Course? Course { get; set; }
         public string StudentNumber { get; set; } = string.Empty;
