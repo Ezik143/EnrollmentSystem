@@ -56,10 +56,6 @@ namespace EnrollmentManagementSystemAPI.Models.Dto.Request
 
         public EducationLevel EducationLevel { get; set; } = EducationLevel.Undergraduate;
 
-        public string SeniorHighTrack { get; set; } = string.Empty;
-
-        public string SeniorHighStrand { get; set; } = string.Empty;
-
         public int YearLevel { get; set; }
 
         public DateOnly DateAdmitted { get; set; }
