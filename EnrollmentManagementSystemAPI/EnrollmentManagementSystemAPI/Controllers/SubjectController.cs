@@ -44,7 +44,7 @@ namespace EnrollmentManagementSystemAPI.Controllers
 
         // POST api/<SubjectController>
         [HttpPost]
-        public async Task<IActionResult> CreateSubject([FromBody] CreateSubjectDto createSubjectDto)
+        public async Task<IActionResult> CreateSubject(CreateSubjectDto createSubjectDto)
         {
             if (createSubjectDto == null)
             {
@@ -59,7 +59,7 @@ namespace EnrollmentManagementSystemAPI.Controllers
 
         // PUT api/<SubjectController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateSubject(int id, [FromBody] CreateSubjectDto updateSubjectDto)
+        public async Task<IActionResult> UpdateSubject(int id, CreateSubjectDto updateSubjectDto)
         {
             var subject = await _subjectService.GetByIdAsync(id);
             if (subject == null)

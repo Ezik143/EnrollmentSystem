@@ -45,7 +45,7 @@ namespace EnrollmentManagementSystemAPI.Controllers
 
         // POST api/<TermController>
         [HttpPost]
-        public async Task<IActionResult> CreateTerm([FromBody] CreateTermDto createTermDto)
+        public async Task<IActionResult> CreateTerm(CreateTermDto createTermDto)
         {
             if (createTermDto == null)
             {
@@ -60,7 +60,7 @@ namespace EnrollmentManagementSystemAPI.Controllers
 
         // PUT api/<TermController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateTerm(int id, [FromBody] CreateTermDto createTermDto)
+        public async Task<IActionResult> UpdateTerm(int id, CreateTermDto createTermDto)
         {
             var term = await _termService.GetByIdAsync(id);
             if (term == null)

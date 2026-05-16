@@ -50,7 +50,7 @@ namespace EnrollmentManagementSystemAPI.Controllers
 
         // POST api/<CourseController>
         [HttpPost]
-        public async Task<IActionResult> CreateCourse([FromBody] CreateCourseDto createCourse)
+        public async Task<IActionResult> CreateCourse(CreateCourseDto createCourse)
         {
             var result = await _createCourseDtoValidator.ValidateAsync(createCourse);
 
@@ -68,7 +68,7 @@ namespace EnrollmentManagementSystemAPI.Controllers
 
         // PUT api/<CourseController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCourse(int id, [FromBody] CreateCourseDto updateCourse)
+        public async Task<IActionResult> UpdateCourse(int id, CreateCourseDto updateCourse)
         {
             var result = await _createCourseDtoValidator.ValidateAsync(updateCourse);
             if (!result.IsValid)
