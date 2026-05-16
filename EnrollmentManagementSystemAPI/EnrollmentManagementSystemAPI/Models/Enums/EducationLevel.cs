@@ -2,7 +2,6 @@ namespace EnrollmentManagementSystemAPI.Models.Enums
 {
     public enum EducationLevel
     {
-        Unknown = 0,
         Kindergarten = 1,
         Elementary = 2,
         JuniorHighSchool = 3,

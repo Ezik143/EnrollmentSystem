@@ -2,7 +2,6 @@ namespace EnrollmentManagementSystemAPI.Models.Enums
 {
     public enum TermType
     {
-        Unknown = 0,
         FirstSemester = 1,
         SecondSemester = 2,
         Midyear = 3,
