@@ -46,7 +46,7 @@ namespace EnrollmentManagementSystemAPI.Controllers
 
         // POST api/<SectionController>
         [HttpPost]
-        public async Task<IActionResult> CreateSection([FromBody] CreateSectionDto createSectionRequest)
+        public async Task<IActionResult> CreateSection(CreateSectionDto createSectionRequest)
         {
             if (createSectionRequest == null)
             {
@@ -57,12 +57,12 @@ namespace EnrollmentManagementSystemAPI.Controllers
             await _sectionService.AddAsync(sections);
 
             var sectionDto = _mapper.Map<SectionResponseDto>(sections);
-            return CreatedAtAction(nameof(GetSectionById), new { id = sectionDto.SectionId }, sectionDto);
+            return CreatedAtAction(nameof(GetSectionById), new { id = sections.SectionId }, sectionDto);
         }
 
         // PUT api/<SectionController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateSection(int id, [FromBody] CreateSectionDto updateSectionRequest)
+        public async Task<IActionResult> UpdateSection(int id,CreateSectionDto updateSectionRequest)
         {
             if (updateSectionRequest == null)
             {
