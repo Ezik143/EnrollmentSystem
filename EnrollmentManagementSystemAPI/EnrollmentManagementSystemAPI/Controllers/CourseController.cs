@@ -17,14 +17,12 @@ namespace EnrollmentManagementSystemAPI.Controllers
 
         private readonly IMapper _mapper;
         private readonly ICourseService _courseService;
-        private readonly IValidator<CourseResponseDto> _courseResponseDtoValidator;
         private readonly IValidator<CreateCourseDto> _createCourseDtoValidator;
 
-        public CourseController(IValidator<CourseResponseDto> courseRespondDto, IValidator<CreateCourseDto> createCourseDtoValidator, ICourseService courseService, IMapper mapper)
+        public CourseController(IValidator<CreateCourseDto> createCourseDtoValidator, ICourseService courseService, IMapper mapper)
         {
             _courseService = courseService;
             _mapper = mapper;
-            _courseResponseDtoValidator = courseRespondDto;
             _createCourseDtoValidator = createCourseDtoValidator;
         }
 
@@ -37,7 +35,7 @@ namespace EnrollmentManagementSystemAPI.Controllers
             return Ok(courseDtos);
         }
 
-        // GET api/<CourseController>/5
+        // GET api/<CourseController>/
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCourse(int id)
         {
@@ -55,7 +53,7 @@ namespace EnrollmentManagementSystemAPI.Controllers
         public async Task<IActionResult> CreateCourse([FromBody] CreateCourseDto createCourse)
         {
             var result = await _createCourseDtoValidator.ValidateAsync(createCourse);
-            
+
             if (!result.IsValid)
             {
                 return BadRequest(new ValidationProblemDetails(result.ToDictionary()));

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EnrollmentManagementSystemAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260504172515_AlignPhilippineEducationEntities")]
-    partial class AlignPhilippineEducationEntities
+    [Migration("20260512151822_intialCreate")]
+    partial class intialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -409,11 +409,6 @@ namespace EnrollmentManagementSystemAPI.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
-                    b.Property<string>("Gender")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
-
                     b.Property<string>("GuardianContactNumber")
                         .IsRequired()
                         .HasMaxLength(30)
@@ -491,6 +486,10 @@ namespace EnrollmentManagementSystemAPI.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
+
+                    b.Property<int>("Sex")
+                        .HasMaxLength(30)
+                        .HasColumnType("integer");
 
                     b.Property<string>("StudentNumber")
                         .IsRequired()
