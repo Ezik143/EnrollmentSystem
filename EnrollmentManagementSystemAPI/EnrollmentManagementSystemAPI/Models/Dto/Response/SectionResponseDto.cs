@@ -9,5 +9,6 @@ namespace EnrollmentManagementSystemAPI.Models.Dto.Response
         public int CourseSubjectId { get; set; }
         public int TermId { get; set; }
         public string Name { get; set; } = string.Empty;
+        public int Capacity { get; set; }
     }
 }

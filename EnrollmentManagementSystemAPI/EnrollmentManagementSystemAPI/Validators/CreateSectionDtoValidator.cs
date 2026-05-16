@@ -24,8 +24,9 @@ namespace EnrollmentManagementSystemAPI.Validators
                 .MaximumLength(50).WithMessage("Section name cannot exceed 50 characters.");
 
 
-            RuleFor(x => x.Schedule)
-                .MaximumLength(120).WithMessage("Schedule cannot exceed 120 characters.");
+            RuleFor(x => x.Capacity)
+                .GreaterThan(0).WithMessage("Capacity must be greater than 0.")
+                .LessThanOrEqualTo(50).WithMessage("Capacity cannot exceed 50.");
         }
     }
 }
