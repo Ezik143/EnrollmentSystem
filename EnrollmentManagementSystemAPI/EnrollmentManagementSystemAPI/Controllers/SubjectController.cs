@@ -1,11 +1,7 @@
-﻿using AutoMapper;
-using EnrollmentManagementSystemAPI.Models.Dto.Request;
+﻿using EnrollmentManagementSystemAPI.Models.Dto.Request;
 using EnrollmentManagementSystemAPI.Models.Dto.Response;
-using EnrollmentManagementSystemAPI.Models.Entities;
 using EnrollmentManagementSystemAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace EnrollmentManagementSystemAPI.Controllers
 {
@@ -14,77 +10,74 @@ namespace EnrollmentManagementSystemAPI.Controllers
     public class SubjectController : ControllerBase
     {
         private readonly ISubjectService _subjectService;
-        private readonly IMapper _mapper;
 
-        public SubjectController(ISubjectService subjectService, IMapper mapper)
+        public SubjectController(ISubjectService subjectService)
         {
             _subjectService = subjectService;
-            _mapper = mapper;
         }
+
         [HttpGet]
-        public async Task<IActionResult> GetAllSubjects()
+        public async Task<ActionResult<IEnumerable<SubjectResponseDto>>> GetAllSubjects()
         {
-            var subjects = await _subjectService.GetAllAsync();
-            var subjectDtos = _mapper.Map<List<SubjectResponseDto>>(subjects);
-            return Ok(subjectDtos);
+            var subjects = await _subjectService.GetAllSubjectsAsync();
+            return Ok(subjects);
         }
 
         // GET api/<SubjectController>/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetSubjectById(int id)
+        public async Task<ActionResult<SubjectResponseDto>> GetSubjectById(int id)
         {
-            var subject = await _subjectService.GetByIdAsync(id);
+            var subject = await _subjectService.GetSubjectByIdAsync(id);
             if (subject == null)
             {
                 return NotFound();
             }
-            var subjectDto = _mapper.Map<SubjectResponseDto>(subject);
-            return Ok(subjectDto);
+            return Ok(subject);
         }
 
         // POST api/<SubjectController>
         [HttpPost]
-        public async Task<IActionResult> CreateSubject(CreateSubjectDto createSubjectDto)
+        public async Task<ActionResult<SubjectResponseDto>> CreateSubject([FromBody] CreateSubjectDto createSubjectDto)
         {
-            if (createSubjectDto == null)
+            try
+            {
+                var subjectDto = await _subjectService.CreateSubjectAsync(createSubjectDto);
+                return CreatedAtAction(nameof(GetSubjectById), new { id = subjectDto.SubjectId }, subjectDto);
+            }
+            catch
             {
                 return BadRequest();
             }
-
-            var subject = _mapper.Map<Subject>(createSubjectDto);
-            await _subjectService.AddAsync(subject);
-            var subjectDto = _mapper.Map<SubjectResponseDto>(subject);
-            return CreatedAtAction(nameof(GetSubjectById), new { id = subject.SubjectId }, subjectDto);
         }
 
         // PUT api/<SubjectController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateSubject(int id, CreateSubjectDto updateSubjectDto)
+        public async Task<ActionResult<SubjectResponseDto>> UpdateSubject(int id, [FromBody] CreateSubjectDto updateSubjectDto)
         {
-            var subject = await _subjectService.GetByIdAsync(id);
-            if (subject == null)
+            try
+            {
+                var subjectDto = await _subjectService.UpdateSubjectAsync(id, updateSubjectDto);
+                return Ok(subjectDto);
+            }
+            catch (KeyNotFoundException)
             {
                 return NotFound();
             }
-
-            _mapper.Map(updateSubjectDto, subject);
-            await _subjectService.UpdateAsync(subject);
-
-            var subjectDto = _mapper.Map<SubjectResponseDto>(subject);
-            return Ok(subjectDto);
         }
 
         // DELETE api/<SubjectController>/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSubject(int id)
         {
-            var subject = await _subjectService.GetByIdAsync(id);
-            if (subject == null)
+            try
+            {
+                await _subjectService.DeleteSubjectAsync(id);
+                return NoContent();
+            }
+            catch (KeyNotFoundException)
             {
                 return NotFound();
             }
-            await _subjectService.DeleteAsync(id);
-            return NoContent();
         }
     }
 }

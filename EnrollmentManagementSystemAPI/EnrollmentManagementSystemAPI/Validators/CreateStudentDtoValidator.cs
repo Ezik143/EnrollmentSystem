@@ -108,8 +108,16 @@ namespace EnrollmentManagementSystemAPI.Validators
 
             RuleFor(x => x.DateAdmitted)
                 .NotEmpty().WithMessage("Date admitted is required.");
+            
             RuleFor(x => x.IndigenousGroup)
                 .MaximumLength(100).WithMessage("Indigenous group cannot exceed 100 characters.");
+
+            RuleFor(x => x.Password)
+                .NotEmpty().WithMessage("Password is required.")
+                .MinimumLength(6).WithMessage("Password must be at least 6 characters long.")
+                .MaximumLength(100).WithMessage("Password cannot exceed 100 characters.")
+                .Matches(@"[A-Z]+").WithMessage("Password must contain at least one uppercase letter.")
+                .Matches(@"\W+").WithMessage("Password must contain at least one special character.");
         }
     }
 }

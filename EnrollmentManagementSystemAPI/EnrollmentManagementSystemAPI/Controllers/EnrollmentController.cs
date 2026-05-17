@@ -1,11 +1,7 @@
-﻿using AutoMapper;
-using EnrollmentManagementSystemAPI.Models.Dto.Request;
+﻿using EnrollmentManagementSystemAPI.Models.Dto.Request;
 using EnrollmentManagementSystemAPI.Models.Dto.Response;
-using EnrollmentManagementSystemAPI.Models.Entities;
 using EnrollmentManagementSystemAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace EnrollmentManagementSystemAPI.Controllers
 {
@@ -14,82 +10,75 @@ namespace EnrollmentManagementSystemAPI.Controllers
     public class EnrollmentController : ControllerBase
     {
         private readonly IEnrollmentService _enrollmentService;
-        private readonly AutoMapper.IMapper _mapper;
-        public EnrollmentController(IEnrollmentService enrollmentService, IMapper mapper)
+
+        public EnrollmentController(IEnrollmentService enrollmentService)
         {
             _enrollmentService = enrollmentService;
-            _mapper = mapper;
         }
 
         // GET: api/<EnrollmentController>
         [HttpGet]
-        public async Task<IActionResult> GetAllEnrollment()
+        public async Task<ActionResult<IEnumerable<EnrollmentResponseDto>>> GetAllEnrollment()
         {
-            var enrollments = await _enrollmentService.GetAllAsync();
-            var enrollmentDtos = _mapper.Map<List<EnrollmentResponseDto>>(enrollments);
-            return Ok(enrollmentDtos);
+            var enrollments = await _enrollmentService.GetAllEnrollmentsAsync();
+            return Ok(enrollments);
         }
 
         // GET api/<EnrollmentController>/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetEnrollment(int id)
+        public async Task<ActionResult<EnrollmentResponseDto>> GetEnrollment(int id)
         {
-            var enrollment = await _enrollmentService.GetByIdAsync(id);
+            var enrollment = await _enrollmentService.GetEnrollmentByIdAsync(id);
             if (enrollment == null)
             {
                 return NotFound();
             }
-            var enrollmentDto = _mapper.Map<EnrollmentResponseDto>(enrollment);
-            return Ok(enrollmentDto);
+            return Ok(enrollment);
         }
 
         // POST api/<EnrollmentController>
         [HttpPost]
-        public async Task<IActionResult> CreateEnrollment(CreateEnrollmentDto createEnrollmentDto)
+        public async Task<ActionResult<EnrollmentResponseDto>> CreateEnrollment([FromBody] CreateEnrollmentDto createEnrollmentDto)
         {
-            if (createEnrollmentDto == null)
+            try
+            {
+                var enrollmentDto = await _enrollmentService.CreateEnrollmentAsync(createEnrollmentDto);
+                return CreatedAtAction(nameof(GetEnrollment), new { id = enrollmentDto.EnrollmentId }, enrollmentDto);
+            }
+            catch
             {
                 return BadRequest();
             }
-
-            var enrollment = _mapper.Map<Enrollment>(createEnrollmentDto);
-            await _enrollmentService.AddAsync(enrollment);
-            var enrollmentResponseDto = _mapper.Map<EnrollmentResponseDto>(enrollment);
-            return CreatedAtAction(nameof(GetEnrollment), new { id = enrollment.EnrollmentId }, enrollmentResponseDto);
         }
 
         // PUT api/<EnrollmentController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> EditEnrollment(int id, CreateEnrollmentDto updateEnrollmentDto)
+        public async Task<ActionResult<EnrollmentResponseDto>> EditEnrollment(int id, [FromBody] CreateEnrollmentDto updateEnrollmentDto)
         {
-            if (updateEnrollmentDto == null)
+            try
             {
-                return BadRequest();
+                var enrollmentDto = await _enrollmentService.UpdateEnrollmentAsync(id, updateEnrollmentDto);
+                return Ok(enrollmentDto);
             }
-            var enrollment = await _enrollmentService.GetByIdAsync(id);
-            if (enrollment == null)
+            catch (KeyNotFoundException)
             {
                 return NotFound();
             }
-
-            _mapper.Map(updateEnrollmentDto, enrollment);
-            await _enrollmentService.UpdateAsync(enrollment);
-
-            var enrollmentDto = _mapper.Map<EnrollmentResponseDto>(enrollment);
-            return Ok(enrollmentDto);
         }
 
         // DELETE api/<EnrollmentController>/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEnrollment(int id)
         {
-            var enrollment = await _enrollmentService.GetByIdAsync(id);
-            if (enrollment == null)
+            try
+            {
+                await _enrollmentService.DeleteEnrollmentAsync(id);
+                return NoContent();
+            }
+            catch (KeyNotFoundException)
             {
                 return NotFound();
             }
-            await _enrollmentService.DeleteAsync(id);
-            return NoContent();
         }
     }
 }

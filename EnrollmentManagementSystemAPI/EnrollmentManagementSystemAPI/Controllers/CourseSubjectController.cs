@@ -1,11 +1,8 @@
-﻿using AutoMapper;
+﻿using System.Linq;
 using EnrollmentManagementSystemAPI.Models.Dto.Request;
 using EnrollmentManagementSystemAPI.Models.Dto.Response;
-using EnrollmentManagementSystemAPI.Models.Entities;
 using EnrollmentManagementSystemAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace EnrollmentManagementSystemAPI.Controllers
 {
@@ -14,83 +11,75 @@ namespace EnrollmentManagementSystemAPI.Controllers
     public class CourseSubjectController : ControllerBase
     {
         private readonly ICourseSubjectService _courseSubjectService;
-        private readonly IMapper _mapper;
-        public CourseSubjectController(ICourseSubjectService courseSubjectService, IMapper mapper)
+
+        public CourseSubjectController(ICourseSubjectService courseSubjectService)
         {
             _courseSubjectService = courseSubjectService;
-            _mapper = mapper;
         }
 
         // GET: api/<CourseSubjectController>
         [HttpGet]
-        public async Task<IActionResult> GetallCourseSubject()
+        public async Task<ActionResult<IEnumerable<CourseSubjectResponseDto>>> GetAllCourseSubject()
         {
-            var courseSubjects = await _courseSubjectService.GetAllAsync();
-            var courseSubjectDtos = _mapper.Map<List<CourseSubjectResponseDto>>(courseSubjects);
-            return Ok(courseSubjectDtos);
+            var courseSubjects = await _courseSubjectService.GetAllCourseSubjectsAsync();
+            return Ok(courseSubjects);
         }
 
         // GET api/<CourseSubjectController>/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetCourseSubject(int id)
+        public async Task<ActionResult<CourseSubjectResponseDto>> GetCourseSubject(int id)
         {
-            var courseSubject = await _courseSubjectService.GetByIdAsync(id);
+            var courseSubject = await _courseSubjectService.GetCourseSubjectByIdAsync(id);
             if (courseSubject == null)
             {
                 return NotFound();
             }
-            var courseSubjectDto = _mapper.Map<CourseSubjectResponseDto>(courseSubject);
-            return Ok(courseSubjectDto);
+            return Ok(courseSubject);
         }
 
         // POST api/<CourseSubjectController>
         [HttpPost]
-        public async Task<IActionResult> PostCourseSubject(CreateCourseSubjectDto courseSubjectDto)
+        public async Task<ActionResult<CourseSubjectResponseDto>> PostCourseSubject([FromBody] CreateCourseSubjectDto createCourseSubjectDto)
         {
-            if (courseSubjectDto == null)
+            try
+            {
+                var courseSubjectDto = await _courseSubjectService.CreateCourseSubjectAsync(createCourseSubjectDto);
+                return CreatedAtAction(nameof(GetCourseSubject), new { id = courseSubjectDto.CourseSubjectId }, courseSubjectDto);
+            }
+            catch
             {
                 return BadRequest();
             }
-            var courseSubject = _mapper.Map<CourseSubject>(courseSubjectDto);
-            await _courseSubjectService.AddAsync(courseSubject);
-            var createdCourseSubjectDto = _mapper.Map<CreateCourseSubjectDto>(courseSubject);
-            return CreatedAtAction(nameof(GetCourseSubject), new { id = courseSubject.CourseSubjectId }, createdCourseSubjectDto);
         }
 
         // PUT api/<CourseSubjectController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCourseSubject(int id, CreateCourseSubjectDto updateCourseSubject)
+        public async Task<ActionResult<CourseSubjectResponseDto>> UpdateCourseSubject(int id, [FromBody] CreateCourseSubjectDto updateCourseSubjectDto)
         {
-            if (updateCourseSubject == null)
+            try
             {
-                return BadRequest();
+                var courseSubjectDto = await _courseSubjectService.UpdateCourseSubjectAsync(id, updateCourseSubjectDto);
+                return Ok(courseSubjectDto);
             }
-
-            var courseSubject = await _courseSubjectService.GetByIdAsync(id);
-            if (courseSubject == null)
+            catch (KeyNotFoundException)
             {
                 return NotFound();
             }
-
-            _mapper.Map(updateCourseSubject, courseSubject);
-            await _courseSubjectService.UpdateAsync(courseSubject);
-
-            var courseSubjectDto = _mapper.Map<CreateCourseSubjectDto>(courseSubject);
-            return CreatedAtAction(nameof(GetCourseSubject), new { id = courseSubject.CourseSubjectId }, courseSubjectDto);
         }
 
         // DELETE api/<CourseSubjectController>/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCourseSubject(int id)
         {
-            var courseSubject = await _courseSubjectService.GetByIdAsync(id);
-            if (courseSubject == null)
+            try
+            {
+                await _courseSubjectService.DeleteCourseSubjectAsync(id);
+                return NoContent();
+            }
+            catch (KeyNotFoundException)
             {
                 return NotFound();
             }
-
-            await _courseSubjectService.DeleteAsync(id);
-            return NoContent();
         }
     }
 }

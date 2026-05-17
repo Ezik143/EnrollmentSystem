@@ -4,6 +4,7 @@ namespace EnrollmentManagementSystemAPI.Models.Dto.Response
 {
     public class SectionResponseDto
     {
+        public int SectionId { get; set; }
         public int InstructorId { get; set; }
         public int CourseId { get; set; }
         public int CourseSubjectId { get; set; }

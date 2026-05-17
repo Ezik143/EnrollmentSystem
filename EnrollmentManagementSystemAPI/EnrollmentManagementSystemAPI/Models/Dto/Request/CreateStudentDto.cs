@@ -67,5 +67,7 @@ namespace EnrollmentManagementSystemAPI.Models.Dto.Request
         public string IndigenousGroup { get; set; } = string.Empty;
 
         public bool IsActive { get; set; } = true;
+
+        public string Password { get; set; } = string.Empty;
     }
 }
