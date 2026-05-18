@@ -39,16 +39,6 @@ builder.Services.AddScoped<ISubjectService, SubjectService>();
 builder.Services.AddScoped<ISectionService, SectionService>();
 builder.Services.AddScoped<ITermService, TermService>();
 
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-    app.MapScalarApiReference();
-}
-
-
 // Identity configuration
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -65,9 +55,9 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        var jwtKey = builder.Configuration["Jwt:Key"];
-        var jwtIssuer = builder.Configuration["Jwt:Issuer"];
-        var jwtAudience = builder.Configuration["Jwt:Audience"];
+        var jwtKey = builder.Configuration["JWT:Secret"];
+        var jwtIssuer = builder.Configuration["JWT:ValidIssuer"];
+        var jwtAudience = builder.Configuration["JWT:ValidAudience"];
 
         if (string.IsNullOrEmpty(jwtKey) || string.IsNullOrEmpty(jwtIssuer) || string.IsNullOrEmpty(jwtAudience))
             throw new InvalidOperationException("JWT configuration is missing in appsettings.json");
@@ -84,8 +74,18 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.MapOpenApi();
+    app.MapScalarApiReference();
+}
+
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

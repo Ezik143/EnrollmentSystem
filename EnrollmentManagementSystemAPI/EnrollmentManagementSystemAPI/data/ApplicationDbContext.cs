@@ -19,5 +19,6 @@ namespace EnrollmentManagementSystemAPI.data
         public DbSet<CourseSubject> CourseSubjects { get; set; } = null!;
         public DbSet<Subject> Subjects { get; set; } = null!;
         public DbSet<Section> Sections { get; set; } = null!;
+        public DbSet<RefreshToken> RefreshTokens { get; set; } = null!;
     }
 }
